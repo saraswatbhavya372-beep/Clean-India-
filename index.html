@@ -150,6 +150,30 @@ section p {
         }
 
     </script>
+<script>
+function getLocation() {
 
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(showLocation);
+
+    } else {
+
+        alert("Location is not supported by this browser.");
+
+    }
+}
+
+function showLocation(position) {
+
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
+
+    document.getElementById("locationResult").innerHTML =
+        "📍 Location found!<br>" +
+        "Latitude: " + latitude + "<br>" +
+        "Longitude: " + longitude;
+}
+</script>
 </body>
 </html>
