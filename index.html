@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Clean India</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f7f0;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #137333;
+            font-size: 40px;
+        }
+
+        p {
+            font-size: 20px;
+            color: #444;
+        }
+
+        form {
+            background-color: white;
+            max-width: 450px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        input, textarea {
+            width: 90%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #137333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0b5e2a;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>🇮🇳 Clean India</h1>
+
+    <p>Together, we can make India cleaner and greener.</p>
+
+    <form>
+
+        <label for="name">Your Name:</label>
+        <br>
+        <input type="text" id="name" placeholder="Enter your name">
+
+        <br><br>
+
+        <label for="location">Location:</label>
+        <br>
+        <input type="text" id="location" placeholder="Enter the location">
+
+        <br><br>
+
+        <label for="description">Describe the Problem:</label>
+        <br>
+        <textarea id="description" rows="5" cols="40"
+            placeholder="Describe the cleanliness problem"></textarea>
+
+        <br>
+
+        <button type="button" onclick="Submit()">Submit The Report</button>
+
+    </form>
+
+    <script>
+
+        function Submit() {
+            alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED.");
+        }
+
+    </script>
+
+</body>
+</html>
