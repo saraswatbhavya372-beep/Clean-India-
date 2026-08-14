@@ -148,27 +148,29 @@ section p {
         function Submit() {
             alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED.");
         }
+        function getLocation() {
+    alert("Location button clicked!");
+
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            alert(
+                "Location received!\nLatitude: " +
+                position.coords.latitude +
+                "\nLongitude: " +
+                position.coords.longitude
+            );
+        },
+        function(error) {
+            alert("Location permission/error: " + error.message);
+        }
+    );
+        }
 
     </script>
-<script>
-    function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                let latitude = position.coords.latitude;
-                let longitude = position.coords.longitude;
-
-                document.getElementById("location").value =
-                    latitude + ", " + longitude;
-            },
-            function() {
-                alert("Please allow location access.");
-            }
-        );
-    } else {
-        alert("Location is not supported by this browser.");
-    }
-    }
-</script>
 </body>
 </html>
