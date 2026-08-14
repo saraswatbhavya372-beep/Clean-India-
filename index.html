@@ -152,28 +152,23 @@ section p {
     </script>
 <script>
 function getLocation() {
-
     if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
 
-        navigator.geolocation.getCurrentPosition(showLocation);
-
+                document.getElementById("location").value =
+                    "Latitude: " + latitude + ", Longitude: " + longitude;
+            },
+            function(error) {
+                alert("Unable to get your location. Please allow location permission.");
+            }
+        );
     } else {
-
-        alert("Location is not supported by this browser.");
-
+        alert("Geolocation is not supported by your browser.");
     }
-}
-
-function showLocation(position) {
-
-    let latitude = position.coords.latitude;
-    let longitude = position.coords.longitude;
-
-    document.getElementById("locationResult").innerHTML =
-        "📍 Location found!<br>" +
-        "Latitude: " + latitude + "<br>" +
-        "Longitude: " + longitude;
-}
+    }
 </script>
 </body>
 </html>
