@@ -152,22 +152,7 @@ section p {
     </script>
 <script>
 function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                document.getElementById("location").value =
-                    "Latitude: " + latitude + ", Longitude: " + longitude;
-            },
-            function(error) {
-                alert("Unable to get your location. Please allow location permission.");
-            }
-        );
-    } else {
-        alert("Geolocation is not supported by your browser.");
-    }
+    alert("Button is working!");
     }
 </script>
 </body>
