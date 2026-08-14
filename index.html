@@ -128,7 +128,7 @@ section p {
         <label for="location">Location:</label>
         <br>
         <input type="text" id="location" placeholder="Enter the location">
-        <button type="button" onclick="alert('Button is working!')">📍 USE MY LOCATION</button>
+        <button type="button" onclick="getLocation">📍 USE MY LOCATION</button>
         <p id="locationResult"></p>
         <br><br>
 
@@ -150,6 +150,25 @@ section p {
         }
 
     </script>
+<script>
+    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
 
+                document.getElementById("location").value =
+                    latitude + ", " + longitude;
+            },
+            function() {
+                alert("Please allow location access.");
+            }
+        );
+    } else {
+        alert("Location is not supported by this browser.");
+    }
+    }
+</script>
 </body>
 </html>
