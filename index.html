@@ -1,4 +1,4 @@
-,<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -125,11 +125,31 @@ section p {
 
         <br><br>
 
-        <label for="location">Location:</label>
-        <br>
-        <input type="text" id="location" placeholder="Enter the location">
-        <button type="button" onclick="getLocation()">📍 USE MY LOCATION</button>
-        <p id="locationResult"></p>
+        <label>📍 Location:</label>
+<br><br>
+
+<input type="text" id="house" placeholder="🏠 House / Plot No.">
+<br><br>
+
+<input type="text" id="street" placeholder="🛣️ Street / Locality">
+<br><br>
+
+<input type="text" id="city" placeholder="🏙️ City">
+<br><br>
+
+<input type="text" id="state" placeholder="🏛️ State">
+<br><br>
+
+<input type="text" id="pincode" placeholder="📮 PIN Code">
+<br><br>
+
+<input type="text" id="country" placeholder="🇮🇳 Country">
+
+<br><br>
+
+<button type="button" onclick="getLocation()">
+📍 USE MY LOCATION
+</button>
         <br><br>
 
         <label for="description">Describe the Problem:</label>
@@ -142,7 +162,7 @@ section p {
         <button type="button" onclick="Submit()">Submit The Report</button>
 
     </form>
-<script>
+    <script>
 function getLocation() {
 
     if (!navigator.geolocation) {
@@ -168,25 +188,28 @@ function getLocation() {
 
                 const data = await response.json();
 
-                const address =
-                    (data.locality || data.city || "") +
-                    (data.city && data.city !== data.locality
-                        ? ", " + data.city
-                        : "") +
-                    (data.principalSubdivision
-                        ? ", " + data.principalSubdivision
-                        : "") +
-                    (data.postcode
-                        ? " - " + data.postcode
-                        : "") +
-                    (data.countryName
-                        ? ", " + data.countryName
-                        : "");
+                document.getElementById("house").value =
+                    data.localityInfo?.administrative?.[0]?.name || "";
 
-                document.getElementById("location").value = address;
+                document.getElementById("street").value =
+                    data.locality || data.principalSubdivision || "";
+
+                document.getElementById("city").value =
+                    data.city || data.locality || "";
+
+                document.getElementById("state").value =
+                    data.principalSubdivision || "";
+
+                document.getElementById("pincode").value =
+                    data.postcode || "";
+
+                document.getElementById("country").value =
+                    data.countryName || "";
 
             } catch (error) {
+
                 alert("Could not find the address. Please try again.");
+
             }
         },
 
@@ -196,6 +219,5 @@ function getLocation() {
     );
 }
 </script>
-    
 </body>
 </html>
