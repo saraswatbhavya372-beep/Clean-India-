@@ -261,17 +261,120 @@
     <script>
 
         // Submit report
-        function Submit() {
+        <script type="module">
 
-            alert(
-                "THANK YOU! YOUR REPORT HAS BEEN SUBMITTED."
-            );
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
-        }
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
+    authDomain: "clean-india-da788.firebaseapp.com",
+    projectId: "clean-india-da788",
+    storageBucket: "clean-india-da788.firebasestorage.app",
+    messagingSenderId: "612973022697",
+    appId: "1:612973022697:web:53d8345127195e4d81cf78",
+    measurementId: "G-8K3BQDW288"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+window.Submit = async function () {
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const house =
+        document.getElementById("house").value.trim();
+
+    const street =
+        document.getElementById("street").value.trim();
+
+    const city =
+        document.getElementById("city").value.trim();
+
+    const state =
+        document.getElementById("state").value.trim();
+
+    const pincode =
+        document.getElementById("pincode").value.trim();
+
+    const country =
+        document.getElementById("country").value.trim();
+
+    const description =
+        document.getElementById("description").value.trim();
+
+
+    if (!name || !city || !description) {
+
+        alert(
+            "Please fill in your Name, City and Problem Description."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await addDoc(
+            collection(db, "reports"),
+            {
+                name: name,
+                house: house,
+                street: street,
+                city: city,
+                state: state,
+                pincode: pincode,
+                country: country,
+                description: description,
+                createdAt: serverTimestamp()
+            }
+        );
+
+
+        alert(
+            "✅ THANK YOU! YOUR REPORT HAS BEEN SAVED."
+        );
+
+
+        document.getElementById("name").value = "";
+        document.getElementById("house").value = "";
+        document.getElementById("street").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("state").value = "";
+        document.getElementById("pincode").value = "";
+        document.getElementById("country").value = "";
+        document.getElementById("description").value = "";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ The report could not be saved. Please try again."
+        );
+
+    }
+
+};
+
+</script>
 
         // Get user's location
-        function getLocation() {
+    <script>  function getLocation() {
 
             if (!navigator.geolocation) {
 
