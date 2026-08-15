@@ -1,94 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Clean India</title>
 
     <style>
-
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f7f0;
+            background-color: #e8f5e9;
+            margin: 0;
+            padding: 0;
             text-align: center;
-            padding: 30px;
         }
 
         h1 {
             color: #137333;
-            font-size: 40px;
+            margin-top: 30px;
         }
 
-        p {
-            font-size: 20px;
-            color: #444;
+        h2 {
+            color: #137333;
         }
 
-        form {
+        nav {
+            margin: 20px;
+        }
+
+        nav a {
+            color: green;
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
             background-color: white;
-            max-width: 450px;
+            max-width: 700px;
             margin: 30px auto;
             padding: 25px;
             border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        input, textarea {
+        section p {
+            color: #444;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        input,
+        textarea {
             width: 90%;
+            max-width: 500px;
             padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #ccc;
+            margin: 8px;
+            border: 1px solid #aaa;
             border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 120px;
         }
 
         button {
-            margin-top: 20px;
-            padding: 12px 25px;
             background-color: #137333;
             color: white;
             border: none;
+            padding: 12px 20px;
             border-radius: 8px;
-            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px;
         }
 
         button:hover {
-            background-color: #0b5e2a;
+            background-color: #0b5d29;
         }
-        nav {
-  text-align: center;
-  margin: 20px;
-}
-
-nav a {
-  color: green;
-  text-decoration: none;
-  margin: 10px;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-        section {
-    background-color: white;
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-section h2 {
-    color: #137333;
-    font-size: 28px;
-}
-
-section p {
-    color: #444;
-    font-size: 17px;
-    line-height: 1.6;
-}
-
     </style>
-
 </head>
 
 <body>
@@ -96,194 +92,270 @@ section p {
     <h1>🇮🇳 Clean India</h1>
 
     <p>Together, we can make India cleaner and greener.</p>
-    <nav> 
-        <a href"#home">🏠HOME</a>
-        <a href"#report">📝REPORT ISSUE</a>
-        <a href=#"tips">🌿TIPS</a>
-        <a href="#volunteer">🙋VOLUNTEER</a>
-              </nav>
-    <section>
-    <h2>🌱 About Clean India</h2>
 
-    <p>
-        Clean India is a platform created to encourage people
-        to keep their surroundings clean, reduce waste and
-        protect our environment.
-    </p>
+    <!-- Navigation -->
+    <nav>
+        <a href="#home">🏠 HOME</a>
+        <a href="#report">📝 REPORT ISSUE</a>
+        <a href="#tips">🌿 TIPS</a>
+        <a href="#volunteer">🙋 VOLUNTEER</a>
+    </nav>
 
-    <p>
-        Together, citizens can report cleanliness problems,
-        learn eco-friendly habits and volunteer for a cleaner
-        and greener India. 🇮🇳
-    </p>
+    <!-- About Section -->
+    <section id="home">
+
+        <h2>🌱 About Clean India</h2>
+
+        <p>
+            Clean India is a platform created to encourage people
+            to keep their surroundings clean, reduce waste and
+            protect our environment.
+        </p>
+
+        <p>
+            Together, citizens can report cleanliness problems,
+            learn eco-friendly habits and volunteer for a cleaner
+            and greener India. 🇮🇳
+        </p>
+
     </section>
-    <form>
 
-        <label for="name">Your Name:</label>
-        <br>
-        <input type="text" id="name" placeholder="Enter your name">
 
-        <br><br>
+    <!-- Report Section -->
+    <section id="report">
 
-        <label>📍 Location:</label>
-<br><br>
+        <h2>📝 Report a Cleanliness Problem</h2>
 
-<input type="text" id="house" placeholder="🏠 House / Plot No.">
-<br><br>
+        <form>
 
-<input type="text" id="street" placeholder="🛣️ Street / Locality">
-<br><br>
+            <label for="name">Name:</label>
+            <br>
 
-<input type="text" id="city" placeholder="🏙️ City">
-<br><br>
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+            >
 
-<input type="text" id="state" placeholder="🏛️ State">
-<br><br>
+            <br>
 
-<input type="text" id="pincode" placeholder="📮 PIN Code">
-<br><br>
+            <label>📍 Location:</label>
+            <br><br>
 
-<input type="text" id="country" placeholder="🇮🇳 Country">
+            <input
+                type="text"
+                id="house"
+                placeholder="🏠 House / Plot No."
+            >
 
-<br><br>
+            <br>
 
-<button type="button" onclick="getLocation()">
-📍 USE MY LOCATION
-</button>
-        <br><br>
+            <input
+                type="text"
+                id="street"
+                placeholder="🛣️ Street / Locality"
+            >
 
-        <label for="description">Describe the Problem:</label>
-        <br>
-        <textarea id="description" rows="5" cols="40"
-            placeholder="Describe the cleanliness problem"></textarea>
+            <br>
 
-        <br>
+            <input
+                type="text"
+                id="city"
+                placeholder="🏙️ City"
+            >
 
-        <button type="button" onclick="Submit()">Submit The Report</button>
+            <br>
 
-    </form>
-    <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+            <input
+                type="text"
+                id="state"
+                placeholder="🏛️ State"
+            >
 
-  const firebaseConfig = {
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+            <br>
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
-  authDomain: "clean-india-da788.firebaseapp.com",
-  projectId: "clean-india-da788",
-  storageBucket: "clean-india-da788.firebasestorage.app",
-  messagingSenderId: "612973022697",
-  appId: "1:612973022697:web:c3c8e7696cae833581cf78",
-  measurementId: "G-FH202VRFLH"
-};
+            <input
+                type="text"
+                id="pincode"
+                placeholder="📮 PIN Code"
+            >
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-  };
+            <br>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+            <input
+                type="text"
+                id="country"
+                placeholder="🌍 Country"
+            >
 
-  window.Submit = async function () {
-    const name = document.getElementById("name").value.trim();
-    const location = document.getElementById("location").value.trim();
-    const description = document.getElementById("description").value.trim();
+            <br>
 
-    if (!name || !location || !description) {
-      alert("Please fill in all the fields.");
-      return;
-    }
+            <button
+                type="button"
+                onclick="getLocation()">
+                📍 USE MY LOCATION
+            </button>
 
-    try {
-      await addDoc(collection(db, "reports"), {
-        name: name,
-        location: location,
-        description: description,
-        createdAt: serverTimestamp()
-      });
+            <br><br>
 
-      alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED.");
-      
-      document.getElementById("name").value = "";
-      document.getElementById("location").value = "";
-      document.getElementById("description").value = "";
+            <label for="description">
+                Problem Description:
+            </label>
 
-    } catch (error) {
-      console.error(error);
-      alert("Sorry, the report could not be submitted.");
-    }
-  };
-    </script>
+            <br>
+
+            <textarea
+                id="description"
+                placeholder="Describe the cleanliness problem">
+            </textarea>
+
+            <br>
+
+            <button
+                type="button"
+                onclick="Submit()">
+                📝 Submit The Report
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- Tips Section -->
+    <section id="tips">
+
+        <h2>🌿 Cleanliness Tips</h2>
+
+        <p>♻️ Separate dry and wet waste.</p>
+
+        <p>🗑️ Always use a dustbin.</p>
+
+        <p>🌳 Plant and protect trees.</p>
+
+        <p>🚯 Avoid throwing plastic on roads.</p>
+
+        <p>💧 Save water and keep water sources clean.</p>
+
+    </section>
+
+
+    <!-- Volunteer Section -->
+    <section id="volunteer">
+
+        <h2>🙋 Become a Volunteer</h2>
+
+        <p>
+            Join the movement and help make your community
+            cleaner and greener. 🌱
+        </p>
+
+        <button type="button">
+            🙋 Join Us
+        </button>
+
+    </section>
+
+
+    <!-- JavaScript -->
     <script>
-function getLocation() {
 
-    if (!navigator.geolocation) {
-        alert("Location is not supported by your browser.");
-        return;
-    }
+        // Submit report
+        function Submit() {
 
-    navigator.geolocation.getCurrentPosition(
-        async function(position) {
+            alert(
+                "THANK YOU! YOUR REPORT HAS BEEN SUBMITTED."
+            );
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+        }
 
-            try {
 
-                const response = await fetch(
-                    "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="
-                    + latitude
-                    + "&longitude="
-                    + longitude
-                    + "&localityLanguage=en"
+        // Get user's location
+        function getLocation() {
+
+            if (!navigator.geolocation) {
+
+                alert(
+                    "Location is not supported by your browser."
                 );
 
-                const data = await response.json();
-
-                document.getElementById("house").value =
-                    data.localityInfo?.administrative?.[0]?.name || "";
-
-                document.getElementById("street").value =
-                    data.locality || data.principalSubdivision || "";
-
-                document.getElementById("city").value =
-                    data.city || data.locality || "";
-
-                document.getElementById("state").value =
-                    data.principalSubdivision || "";
-
-                document.getElementById("pincode").value =
-                    data.postcode || "";
-
-                document.getElementById("country").value =
-                    data.countryName || "";
-
-            } catch (error) {
-
-                alert("Could not find the address. Please try again.");
-
+                return;
             }
-        },
 
-        function(error) {
-            alert("Please allow location permission and try again.");
+            navigator.geolocation.getCurrentPosition(
+
+                async function(position) {
+
+                    const latitude =
+                        position.coords.latitude;
+
+                    const longitude =
+                        position.coords.longitude;
+
+                    try {
+
+                        const response = await fetch(
+                            "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="
+                            + latitude
+                            + "&longitude="
+                            + longitude
+                            + "&localityLanguage=en"
+                        );
+
+                        const data =
+                            await response.json();
+
+
+                        document.getElementById("street").value =
+                            data.locality || "";
+
+
+                        document.getElementById("city").value =
+                            data.city || data.locality || "";
+
+
+                        document.getElementById("state").value =
+                            data.principalSubdivision || "";
+
+
+                        document.getElementById("pincode").value =
+                            data.postcode || "";
+
+
+                        document.getElementById("country").value =
+                            data.countryName || "";
+
+
+                        alert(
+                            "📍 Location found successfully!"
+                        );
+
+                    }
+
+                    catch (error) {
+
+                        alert(
+                            "Could not find the address. Please try again."
+                        );
+
+                    }
+
+                },
+
+                function(error) {
+
+                    alert(
+                        "Please allow location permission and try again."
+                    );
+
+                }
+
+            );
+
         }
-    );
-}
-</script>
+
+    </script>
+
 </body>
+
 </html>
