@@ -258,19 +258,11 @@
 
 
     <!-- JavaScript -->
-    <script>
+    <script>// ================================
+// CLEAN INDIA - FIREBASE SCRIPT
+// ================================
 
-        // Submit report
-            
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
   authDomain: "clean-india-da788.firebaseapp.com",
@@ -281,32 +273,155 @@ const firebaseConfig = {
   measurementId: "G-8K3BQDW288"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Load Firebase
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-window.Submit = async function () {
 
-  try {
-    const name = document.getElementById("name").value;
-    const description = document.getElementById("description").value;
-    const location = document.getElementById("location").value;
+// ================================
+// SUBMIT REPORT
+// ================================
 
-    await addDoc(collection(db, "reports"), {
-      name: name,
-      description: description,
-      location: location,
-      status: "pending",
-      timestamp: serverTimestamp()
+function Submit() {
+
+    const name = document.getElementById("name").value.trim();
+    const location = document.getElementById("location").value.trim();
+    const description = document.getElementById("description").value.trim();
+
+    // Check empty fields
+    if (name === "" || location === "" || description === "") {
+        alert("Please fill all the fields.");
+        return;
+    }
+
+    // Show saving message
+    alert("Submitting your report... ⏳");
+
+    // Save report to Firestore
+    db.collection("reports").add({
+        name: name,
+        location: location,
+        description: description,
+        status: "pending",
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(function() {
+
+        alert("THANK YOU! 🇮🇳\n\nYour report has been submitted successfully! ✅");
+
+        // Clear form
+        document.getElementById("name").value = "";
+        document.getElementById("location").value = "";
+        document.getElementById("description").value = "";
+
+    })
+    .catch(function(error) {
+
+        console.error("Firebase error:", error);
+
+        alert(
+            "Something went wrong ❌\n\n" +
+            error.message
+        );
     });
+}
 
+
+// ================================
+// GET DEVICE LOCATION
+// ================================
+
+function getLocation() {
+
+    if (!navigator.geolocation) {
+        alert("Location is not supported by this browser.");
+        return;
+    }
+
+    alert("Please allow location permission when your browser asks. 📍");
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Put coordinates into the location box
+            document.getElementById("location").value =
+                "Latitude: " + latitude +
+                ", Longitude: " + longitude;
+
+            alert(
+                "Location detected successfully! 📍\n\n" +
+                "Latitude: " + latitude +
+                "\nLongitude: " + longitude
+            );
+        },
+
+        function(error) {
+
+            alert(
+                "Could not get your location.\n\n" +
+                "Please allow location permission and try again."
+            );
+
+            console.error("Location error:", error);
+        }
+    );
+}
+
+        // Submit report
+            <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
+  authDomain: "clean-india-da788.firebaseapp.com",
+  projectId: "clean-india-da788",
+  storageBucket: "clean-india-da788.firebasestorage.app",
+  messagingSenderId: "612973022697",
+  appId: "1:612973022697:web:53d8345127195e4d81cf78",
+  measurementId: "G-8K3BQDW288"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+function Submit() {
+
+  const name = document.getElementById("name").value;
+  const location = document.getElementById("location").value;
+  const description = document.getElementById("description").value;
+
+  if (!name || !location || !description) {
+    alert("Please fill all the fields.");
+    return;
+  }
+
+  db.collection("reports").add({
+    name: name,
+    location: location,
+    description: description,
+    status: "pending",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(function() {
     alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED ✅");
 
-  } catch (error) {
+    document.getElementById("name").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("description").value = "";
+  })
+  .catch(function(error) {
     console.error(error);
-    alert("Something went wrong. Please try again.");
-  }
-};
+    alert("Firebase error: " + error.message);
+  });
+}
 </script>
+
 </body>
 
 </html>
