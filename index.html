@@ -143,22 +143,53 @@ section p {
 
     </form>
 <script>
-function Submit() {
-    alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED.");
-}
-
 function getLocation() {
+
     if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser.");
+        alert("Location is not supported by your browser.");
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        function(position) {
-            document.getElementById("location").value =
-                position.coords.latitude + ", " +
-                position.coords.longitude;
+        async function(position) {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            try {
+
+                const response = await fetch(
+                    "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="
+                    + latitude
+                    + "&longitude="
+                    + longitude
+                    + "&localityLanguage=en"
+                );
+
+                const data = await response.json();
+
+                const address =
+                    (data.locality || data.city || "") +
+                    (data.city && data.city !== data.locality
+                        ? ", " + data.city
+                        : "") +
+                    (data.principalSubdivision
+                        ? ", " + data.principalSubdivision
+                        : "") +
+                    (data.postcode
+                        ? " - " + data.postcode
+                        : "") +
+                    (data.countryName
+                        ? ", " + data.countryName
+                        : "");
+
+                document.getElementById("location").value = address;
+
+            } catch (error) {
+                alert("Could not find the address. Please try again.");
+            }
         },
+
         function(error) {
             alert("Please allow location permission and try again.");
         }
