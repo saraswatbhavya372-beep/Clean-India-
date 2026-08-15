@@ -128,7 +128,7 @@ section p {
         <label for="location">Location:</label>
         <br>
         <input type="text" id="location" placeholder="Enter the location">
-        <button type="button" onclick="getLocation">📍 USE MY LOCATION</button>
+        <button type="button" onclick="getLocation()">📍 USE MY LOCATION</button>
         <p id="locationResult"></p>
         <br><br>
 
@@ -142,35 +142,29 @@ section p {
         <button type="button" onclick="Submit()">Submit The Report</button>
 
     </form>
+<script>
+function Submit() {
+    alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED.");
+}
 
-    <script>
-
-        function Submit() {
-            alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED.");
-        }
-        function getLocation() {
-    alert("Location button clicked!");
-
+function getLocation() {
     if (!navigator.geolocation) {
-        alert("Geolocation is not supported.");
+        alert("Geolocation is not supported by your browser.");
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
         function(position) {
-            alert(
-                "Location received!\nLatitude: " +
-                position.coords.latitude +
-                "\nLongitude: " +
-                position.coords.longitude
-            );
+            document.getElementById("location").value =
+                position.coords.latitude + ", " +
+                position.coords.longitude;
         },
         function(error) {
-            alert("Location permission/error: " + error.message);
+            alert("Please allow location permission and try again.");
         }
     );
-        }
-
-    </script>
+}
+</script>
+    
 </body>
 </html>
