@@ -299,97 +299,153 @@ const db = firebase.firestore();
 // ======================
 // SUBMIT
 // ======================
-
+        
 function Submit() {
 
-    const name =
-        document.getElementById("name").value.trim();
+    // Get form values
+    const name = document.getElementById("name").value.trim();
 
-    const house =
-        document.getElementById("house").value.trim();
+    const house = document.getElementById("house").value.trim();
+    const street = document.getElementById("street").value.trim();
+    const city = document.getElementById("city").value.trim();
+    const state = document.getElementById("state").value.trim();
+    const pincode = document.getElementById("pincode").value.trim();
+    const country = document.getElementById("country").value.trim();
 
-    const street =
-        document.getElementById("street").value.trim();
-
-    const city =
-        document.getElementById("city").value.trim();
-
-    const state =
-        document.getElementById("state").value.trim();
-
-    const pincode =
-        document.getElementById("pincode").value.trim();
-
-    const country =
-        document.getElementById("country").value.trim();
-
-    const location =
-        document.getElementById("location").value.trim();
+    const location = document.getElementById("location").value.trim();
 
     const description =
         document.getElementById("description").value.trim();
 
+    const photoInput =
+        document.getElementById("reportPhoto");
 
+    const photoFile = photoInput.files[0];
+
+
+    // Check required fields
     if (!name || !location || !description) {
 
-        alert("Please fill all required fields.");
+        alert("Please fill Name, Location and Problem Description.");
         return;
     }
 
 
-    alert("Submitting your report... ⏳");
+    // Check photo
+    if (!photoFile) {
+
+        alert("Please upload a photo of the problem 📸");
+        return;
+    }
 
 
-    db.collection("reports").add({
+    // Only allow images
+    if (!photoFile.type.startsWith("image/")) {
 
-        name: name,
+        alert("Please select an image file.");
+        return;
+    }
 
-        house: house,
 
-        street: street,
+    // Limit image size to 5 MB
+    if (photoFile.size > 5 * 1024 * 1024) {
 
-        city: city,
+        alert("Photo must be smaller than 5 MB.");
+        return;
+    }
 
-        state: state,
 
-        pincode: pincode,
+    alert("Uploading your report... ⏳");
 
-        country: country,
 
-        location: location,
+    // Create unique file name
+    const fileName =
+        Date.now() + "_" + photoFile.name;
 
-        description: description,
 
-        status: "pending",
+    // Firebase Storage location
+    const storageRef =
+        storage.ref("reportPhotos/" + fileName);
 
-        timestamp:
-            firebase.firestore.FieldValue.serverTimestamp()
+
+    // Upload photo
+    storageRef.put(photoFile)
+
+    .then(function(snapshot) {
+
+        // Get photo URL
+        return snapshot.ref.getDownloadURL();
+
+    })
+
+    .then(function(photoURL) {
+
+        // Save everything in Firestore
+        return db.collection("reports").add({
+
+            name: name,
+
+            house: house,
+            street: street,
+            city: city,
+            state: state,
+            pincode: pincode,
+            country: country,
+
+            location: location,
+
+            description: description,
+
+            photoURL: photoURL,
+
+            status: "pending",
+
+            timestamp:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+        });
 
     })
 
     .then(function() {
 
         alert(
-            "✅ THANK YOU!\n\n" +
-            "Your report has been submitted successfully!"
+            "✅ THANK YOU! 🇮🇳\n\n" +
+            "Your report and photo have been submitted successfully!"
         );
+
+
+        // Clear form
+        document.getElementById("name").value = "";
+
+        document.getElementById("house").value = "";
+        document.getElementById("street").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("state").value = "";
+        document.getElementById("pincode").value = "";
+        document.getElementById("country").value = "";
+
+        document.getElementById("location").value = "";
+
+        document.getElementById("description").value = "";
+
+        document.getElementById("reportPhoto").value = "";
 
     })
 
     .catch(function(error) {
 
-        console.error(
-            "Firebase error:",
-            error
-        );
+        console.error("Firebase error:", error);
 
         alert(
-            "❌ Firebase Error:\n\n" +
+            "❌ Something went wrong.\n\n" +
             error.message
         );
 
     });
 
+}
+    .
 }
 // ======================
 // LOCATION
