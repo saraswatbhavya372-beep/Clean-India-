@@ -187,7 +187,12 @@
                 id="country"
                 placeholder="🌍 Country"
             >
-
+            <br>
+<input
+    type="text"
+    id="location"
+    placeholder="📍 Exact Location"
+>
             <br>
 
             <button
@@ -258,9 +263,10 @@
 
 
     <!-- JavaScript -->
-    <script>// ================================
-// CLEAN INDIA - FIREBASE SCRIPT
-// ================================
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
 
 // Firebase configuration
 const firebaseConfig = {
@@ -273,154 +279,116 @@ const firebaseConfig = {
   measurementId: "G-8K3BQDW288"
 };
 
-// Load Firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 const db = firebase.firestore();
 
 
-// ================================
-// SUBMIT REPORT
-// ================================
+// ======================
+// SUBMIT
+// ======================
 
 function Submit() {
 
-    const name = document.getElementById("name").value.trim();
-    const location = document.getElementById("location").value.trim();
-    const description = document.getElementById("description").value.trim();
+    const name =
+        document.getElementById("name").value;
 
-    // Check empty fields
-    if (name === "" || location === "" || description === "") {
-        alert("Please fill all the fields.");
+    const location =
+        document.getElementById("location").value;
+
+    const description =
+        document.getElementById("description").value;
+
+    if (!name || !location || !description) {
+
+        alert("Please fill all fields.");
         return;
     }
 
-    // Show saving message
-    alert("Submitting your report... ⏳");
-
-    // Save report to Firestore
     db.collection("reports").add({
+
         name: name,
         location: location,
         description: description,
         status: "pending",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+
+        timestamp:
+            firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
     })
+
     .then(function() {
 
-        alert("THANK YOU! 🇮🇳\n\nYour report has been submitted successfully! ✅");
-
-        // Clear form
-        document.getElementById("name").value = "";
-        document.getElementById("location").value = "";
-        document.getElementById("description").value = "";
+        alert(
+            "✅ THANK YOU!\n\nYour report has been submitted."
+        );
 
     })
+
     .catch(function(error) {
 
-        console.error("Firebase error:", error);
+        console.error(error);
 
         alert(
-            "Something went wrong ❌\n\n" +
+            "Firebase Error:\n" +
             error.message
         );
+
     });
+
 }
 
 
-// ================================
-// GET DEVICE LOCATION
-// ================================
+// ======================
+// LOCATION
+// ======================
 
 function getLocation() {
 
     if (!navigator.geolocation) {
-        alert("Location is not supported by this browser.");
+
+        alert(
+            "Location is not supported."
+        );
+
         return;
     }
-
-    alert("Please allow location permission when your browser asks. 📍");
 
     navigator.geolocation.getCurrentPosition(
 
         function(position) {
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+            const latitude =
+                position.coords.latitude;
 
-            // Put coordinates into the location box
+            const longitude =
+                position.coords.longitude;
+
             document.getElementById("location").value =
-                "Latitude: " + latitude +
-                ", Longitude: " + longitude;
+                latitude + ", " + longitude;
 
             alert(
-                "Location detected successfully! 📍\n\n" +
-                "Latitude: " + latitude +
-                "\nLongitude: " + longitude
+                "📍 Location found!"
             );
         },
 
         function(error) {
 
             alert(
-                "Could not get your location.\n\n" +
-                "Please allow location permission and try again."
+                "Please allow location access."
             );
 
-            console.error("Location error:", error);
         }
+
     );
+
 }
 
-        // Submit report
-            <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
-  authDomain: "clean-india-da788.firebaseapp.com",
-  projectId: "clean-india-da788",
-  storageBucket: "clean-india-da788.firebasestorage.app",
-  messagingSenderId: "612973022697",
-  appId: "1:612973022697:web:53d8345127195e4d81cf78",
-  measurementId: "G-8K3BQDW288"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
-
-function Submit() {
-
-  const name = document.getElementById("name").value;
-  const location = document.getElementById("location").value;
-  const description = document.getElementById("description").value;
-
-  if (!name || !location || !description) {
-    alert("Please fill all the fields.");
-    return;
-  }
-
-  db.collection("reports").add({
-    name: name,
-    location: location,
-    description: description,
-    status: "pending",
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  })
-  .then(function() {
-    alert("THANK YOU! YOUR REPORT HAS BEEN SUBMITTED ✅");
-
-    document.getElementById("name").value = "";
-    document.getElementById("location").value = "";
-    document.getElementById("description").value = "";
-  })
-  .catch(function(error) {
-    console.error(error);
-    alert("Firebase error: " + error.message);
-  });
-}
 </script>
+            
 
 </body>
 
