@@ -293,7 +293,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
-    const storage = firebase.storage();
 
 
 // ======================
@@ -317,11 +316,6 @@ function Submit() {
     const description =
         document.getElementById("description").value.trim();
 
-    const photoInput =
-        document.getElementById("reportPhoto");
-
-    const photoFile = photoInput.files[0];
-
 
     // Check required fields
     if (!name || !location || !description) {
@@ -332,11 +326,7 @@ function Submit() {
 
 
     // Check photo
-    if (!photoFile) {
-
-        alert("Please upload a photo of the problem 📸");
-        return;
-    }
+    
 
 
     // Only allow images
@@ -359,17 +349,7 @@ function Submit() {
 
 
     // Create unique file name
-    const fileName =
-        Date.now() + "_" + photoFile.name;
-
-
-    // Firebase Storage location
-    const storageRef =
-        storage.ref("reportPhotos/" + fileName);
-
-
-    // Upload photo
-    storageRef.put(photoFile)
+    
 
     .then(function(snapshot) {
 
