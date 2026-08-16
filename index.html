@@ -293,74 +293,110 @@ const db = firebase.firestore();
 function Submit() {
 
     const name =
-        document.getElementById("name").value;
+        document.getElementById("name").value.trim();
+
+    const house =
+        document.getElementById("house").value.trim();
+
+    const street =
+        document.getElementById("street").value.trim();
+
+    const city =
+        document.getElementById("city").value.trim();
+
+    const state =
+        document.getElementById("state").value.trim();
+
+    const pincode =
+        document.getElementById("pincode").value.trim();
+
+    const country =
+        document.getElementById("country").value.trim();
 
     const location =
-        document.getElementById("location").value;
+        document.getElementById("location").value.trim();
 
     const description =
-        document.getElementById("description").value;
+        document.getElementById("description").value.trim();
+
 
     if (!name || !location || !description) {
 
-        alert("Please fill all fields.");
+        alert("Please fill all required fields.");
         return;
     }
+
+
+    alert("Submitting your report... ⏳");
+
 
     db.collection("reports").add({
 
         name: name,
+
+        house: house,
+
+        street: street,
+
+        city: city,
+
+        state: state,
+
+        pincode: pincode,
+
+        country: country,
+
         location: location,
+
         description: description,
+
         status: "pending",
 
         timestamp:
-            firebase.firestore
-            .FieldValue
-            .serverTimestamp()
+            firebase.firestore.FieldValue.serverTimestamp()
 
     })
 
     .then(function() {
 
         alert(
-            "✅ THANK YOU!\n\nYour report has been submitted."
+            "✅ THANK YOU!\n\n" +
+            "Your report has been submitted successfully!"
         );
 
     })
 
     .catch(function(error) {
 
-        console.error(error);
+        console.error(
+            "Firebase error:",
+            error
+        );
 
         alert(
-            "Firebase Error:\n" +
+            "❌ Firebase Error:\n\n" +
             error.message
         );
 
     });
 
 }
-
-
 // ======================
 // LOCATION
 // ======================
-
 function getLocation() {
 
     if (!navigator.geolocation) {
 
-        alert(
-            "Location is not supported."
-        );
-
+        alert("Location is not supported by this browser.");
         return;
     }
 
+    alert("📍 Please allow location access.");
+
     navigator.geolocation.getCurrentPosition(
 
-        function(position) {
+        async function(position) {
 
             const latitude =
                 position.coords.latitude;
@@ -368,18 +404,114 @@ function getLocation() {
             const longitude =
                 position.coords.longitude;
 
-            document.getElementById("location").value =
-                latitude + ", " + longitude;
 
-            alert(
-                "📍 Location found!"
-            );
+            // =========================
+            // SAVE EXACT GPS COORDINATES
+            // =========================
+
+            document.getElementById("location").value =
+                "Latitude: " + latitude +
+                ", Longitude: " + longitude;
+
+
+            try {
+
+                // =========================
+                // CONVERT GPS → ADDRESS
+                // =========================
+
+                const response = await fetch(
+                    "https://nominatim.openstreetmap.org/reverse" +
+                    "?format=jsonv2" +
+                    "&lat=" + latitude +
+                    "&lon=" + longitude +
+                    "&addressdetails=1"
+                );
+
+
+                const data = await response.json();
+
+                const address = data.address || {};
+
+
+                // =========================
+                // FILL ADDRESS FIELDS
+                // =========================
+
+                document.getElementById("house").value =
+                    address.house_number || "";
+
+                document.getElementById("street").value =
+                    address.road ||
+                    address.neighbourhood ||
+                    address.suburb ||
+                    "";
+
+                document.getElementById("city").value =
+                    address.city ||
+                    address.town ||
+                    address.village ||
+                    "";
+
+                document.getElementById("state").value =
+                    address.state ||
+                    "";
+
+                document.getElementById("pincode").value =
+                    address.postcode ||
+                    "";
+
+                document.getElementById("country").value =
+                    address.country ||
+                    "";
+
+
+                // =========================
+                // DISPLAY READABLE LOCATION
+                // =========================
+
+                document.getElementById("location").value =
+                    latitude +
+                    ", " +
+                    longitude;
+
+
+                alert(
+                    "✅ Location found!\n\n" +
+                    "📍 GPS: " +
+                    latitude +
+                    ", " +
+                    longitude
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Address lookup error:",
+                    error
+                );
+
+                alert(
+                    "📍 GPS coordinates found, " +
+                    "but the readable address could not be retrieved."
+                );
+
+            }
+
         },
+
 
         function(error) {
 
+            console.error(
+                "Location error:",
+                error
+            );
+
             alert(
-                "Please allow location access."
+                "❌ Location permission was not available.\n\n" +
+                "Please allow location access and try again."
             );
 
         }
@@ -387,6 +519,7 @@ function getLocation() {
     );
 
 }
+
 
 </script>
             
