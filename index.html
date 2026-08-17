@@ -93,7 +93,6 @@
 
     <p>Together, we can make India cleaner and greener.</p>
 
-    <!-- Navigation -->
     <nav>
         <a href="#home">🏠 HOME</a>
         <a href="#report">📝 REPORT ISSUE</a>
@@ -101,7 +100,6 @@
         <a href="#volunteer">🙋 VOLUNTEER</a>
     </nav>
 
-    <!-- About Section -->
     <section id="home">
 
         <h2>🌱 About Clean India</h2>
@@ -121,7 +119,6 @@
     </section>
 
 
-    <!-- Report Section -->
     <section id="report">
 
         <h2>📝 Report a Cleanliness Problem</h2>
@@ -187,12 +184,15 @@
                 id="country"
                 placeholder="🌍 Country"
             >
+
             <br>
-<input
-    type="text"
-    id="location"
-    placeholder="📍 Exact Location"
->
+
+            <input
+                type="text"
+                id="location"
+                placeholder="📍 GPS Location"
+            >
+
             <br>
 
             <button
@@ -213,19 +213,7 @@
                 id="description"
                 placeholder="Describe the cleanliness problem">
             </textarea>
-            <br>
 
-<label for="reportPhoto">
-    📸 Upload Photo of the Problem
-</label>
-
-<br>
-
-<input
-    type="file"
-    id="reportPhoto"
-    accept="image/*"
->
             <br>
 
             <button
@@ -239,25 +227,19 @@
     </section>
 
 
-    <!-- Tips Section -->
     <section id="tips">
 
         <h2>🌿 Cleanliness Tips</h2>
 
         <p>♻️ Separate dry and wet waste.</p>
-
         <p>🗑️ Always use a dustbin.</p>
-
         <p>🌳 Plant and protect trees.</p>
-
         <p>🚯 Avoid throwing plastic on roads.</p>
-
         <p>💧 Save water and keep water sources clean.</p>
 
     </section>
 
 
-    <!-- Volunteer Section -->
     <section id="volunteer">
 
         <h2>🙋 Become a Volunteer</h2>
@@ -272,304 +254,182 @@
         </button>
 
     </section>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
-    <!-- JavaScript -->
-<script>
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
-  authDomain: "clean-india-da788.firebaseapp.com",
-  projectId: "clean-india-da788",
-  storageBucket: "clean-india-da788.firebasestorage.app",
-  messagingSenderId: "612973022697",
-  appId: "1:612973022697:web:53d8345127195e4d81cf78",
-  measurementId: "G-8K3BQDW288"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+    <!-- Firebase -->
 
-const db = firebase.firestore();
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-// ======================
-// SUBMIT
-// ======================
-        
-function Submit() {
 
-    // Get form values
-    const name = document.getElementById("name").value.trim();
+    <script>
 
-    const house = document.getElementById("house").value.trim();
-    const street = document.getElementById("street").value.trim();
-    const city = document.getElementById("city").value.trim();
-    const state = document.getElementById("state").value.trim();
-    const pincode = document.getElementById("pincode").value.trim();
-    const country = document.getElementById("country").value.trim();
+        // =========================
+        // FIREBASE CONFIGURATION
+        // =========================
 
-    const location = document.getElementById("location").value.trim();
+        const firebaseConfig = {
 
-    const description =
-        document.getElementById("description").value.trim();
+            apiKey:
+                "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
 
+            authDomain:
+                "clean-india-da788.firebaseapp.com",
 
-    // Check required fields
-    if (!name || !location || !description) {
+            projectId:
+                "clean-india-da788",
 
-        alert("Please fill Name, Location and Problem Description.");
-        return;
-    }
+            storageBucket:
+                "clean-india-da788.firebasestorage.app",
 
+            messagingSenderId:
+                "612973022697",
 
-    // Check photo
-    
+            appId:
+                "1:612973022697:web:53d8345127195e4d81cf78",
 
+            measurementId:
+                "G-8K3BQDW288"
+        };
 
-    // Only allow images
-    if (!photoFile.type.startsWith("image/")) {
 
-        alert("Please select an image file.");
-        return;
-    }
+        // Initialize Firebase
 
+        firebase.initializeApp(firebaseConfig);
 
-    // Limit image size to 5 MB
-    if (photoFile.size > 5 * 1024 * 1024) {
 
-        alert("Photo must be smaller than 5 MB.");
-        return;
-    }
+        // Firestore database
 
+        const db = firebase.firestore();
 
-    alert("Uploading your report... ⏳");
 
+        // =========================
+        // SUBMIT REPORT
+        // =========================
 
-    // Create unique file name
-    
+        function Submit() {
 
-    .then(function(snapshot) {
+            alert("Submit button is working! ✅");
 
-        // Get photo URL
-        return snapshot.ref.getDownloadURL();
 
-    })
+            const name =
+                document.getElementById("name").value.trim();
 
-    .then(function(photoURL) {
+            const house =
+                document.getElementById("house").value.trim();
 
-        // Save everything in Firestore
-        return db.collection("reports").add({
+            const street =
+                document.getElementById("street").value.trim();
 
-            name: name,
+            const city =
+                document.getElementById("city").value.trim();
 
-            house: house,
-            street: street,
-            city: city,
-            state: state,
-            pincode: pincode,
-            country: country,
+            const state =
+                document.getElementById("state").value.trim();
 
-            location: location,
+            const pincode =
+                document.getElementById("pincode").value.trim();
 
-            description: description,
+            const country =
+                document.getElementById("country").value.trim();
 
-            photoURL: photoURL,
+            const location =
+                document.getElementById("location").value.trim();
 
-            status: "pending",
+            const description =
+                document.getElementById("description").value.trim();
 
-            timestamp:
-                firebase.firestore.FieldValue.serverTimestamp()
 
-        });
+            // Check required fields
 
-    })
-
-    .then(function() {
-
-        alert(
-            "✅ THANK YOU! 🇮🇳\n\n" +
-            "Your report and photo have been submitted successfully!"
-        );
-
-
-        // Clear form
-        document.getElementById("name").value = "";
-
-        document.getElementById("house").value = "";
-        document.getElementById("street").value = "";
-        document.getElementById("city").value = "";
-        document.getElementById("state").value = "";
-        document.getElementById("pincode").value = "";
-        document.getElementById("country").value = "";
-
-        document.getElementById("location").value = "";
-
-        document.getElementById("description").value = "";
-
-        document.getElementById("reportPhoto").value = "";
-
-    })
-
-    .catch(function(error) {
-
-        console.error("Firebase error:", error);
-
-        alert(
-            "❌ Something went wrong.\n\n" +
-            error.message
-        );
-
-    });
-
-}
-    .
-}
-// ======================
-// LOCATION
-// ======================
-function getLocation() {
-
-    if (!navigator.geolocation) {
-
-        alert("Location is not supported by this browser.");
-        return;
-    }
-
-    alert("📍 Please allow location access.");
-
-    navigator.geolocation.getCurrentPosition(
-
-        async function(position) {
-
-            const latitude =
-                position.coords.latitude;
-
-            const longitude =
-                position.coords.longitude;
-
-
-            // =========================
-            // SAVE EXACT GPS COORDINATES
-            // =========================
-
-            document.getElementById("location").value =
-                "Latitude: " + latitude +
-                ", Longitude: " + longitude;
-
-
-            try {
-
-                // =========================
-                // CONVERT GPS → ADDRESS
-                // =========================
-
-                const response = await fetch(
-                    "https://nominatim.openstreetmap.org/reverse" +
-                    "?format=jsonv2" +
-                    "&lat=" + latitude +
-                    "&lon=" + longitude +
-                    "&addressdetails=1"
-                );
-
-
-                const data = await response.json();
-
-                const address = data.address || {};
-
-
-                // =========================
-                // FILL ADDRESS FIELDS
-                // =========================
-
-                document.getElementById("house").value =
-                    address.house_number || "";
-
-                document.getElementById("street").value =
-                    address.road ||
-                    address.neighbourhood ||
-                    address.suburb ||
-                    "";
-
-                document.getElementById("city").value =
-                    address.city ||
-                    address.town ||
-                    address.village ||
-                    "";
-
-                document.getElementById("state").value =
-                    address.state ||
-                    "";
-
-                document.getElementById("pincode").value =
-                    address.postcode ||
-                    "";
-
-                document.getElementById("country").value =
-                    address.country ||
-                    "";
-
-
-                // =========================
-                // DISPLAY READABLE LOCATION
-                // =========================
-
-                document.getElementById("location").value =
-                    latitude +
-                    ", " +
-                    longitude;
-
+            if (
+                name === "" ||
+                location === "" ||
+                description === ""
+            ) {
 
                 alert(
-                    "✅ Location found!\n\n" +
-                    "📍 GPS: " +
-                    latitude +
-                    ", " +
-                    longitude
+                    "Please fill Name, Location and Problem Description."
+                );
+
+                return;
+            }
+
+
+            // Save report to Firestore
+
+            db.collection("reports").add({
+
+                name: name,
+
+                house: house,
+
+                street: street,
+
+                city: city,
+
+                state: state,
+
+                pincode: pincode,
+
+                country: country,
+
+                location: location,
+
+                description: description,
+
+                status: "pending",
+
+                timestamp:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            })
+
+
+            .then(function() {
+
+                alert(
+                    "✅ THANK YOU! 🇮🇳\n\n" +
+                    "Your report has been submitted successfully!"
                 );
 
 
-            } catch (error) {
+                // Clear fields
+
+                document.getElementById("name").value = "";
+
+                document.getElementById("house").value = "";
+
+                document.getElementById("street").value = "";
+
+                document.getElementById("city").value = "";
+
+                document.getElementById("state").value = "";
+
+                document.getElementById("pincode").value = "";
+
+                document.getElementById("country").value = "";
+
+                document.getElementById("location").value = "";
+
+                document.getElementById("description").value = "";
+
+            })
+
+
+            .catch(function(error) {
 
                 console.error(
-                    "Address lookup error:",
+                    "Firebase error:",
                     error
                 );
 
                 alert(
-                    "📍 GPS coordinates found, " +
-                    "but the readable address could not be retrieved."
+                    "❌ Firebase Error:\n\n" +
+                    error.message
                 );
 
-            }
+            });
 
-        },
-
-
-        function(error) {
-
-            console.error(
-                "Location error:",
-                error
-            );
-
-            alert(
-                "❌ Location permission was not available.\n\n" +
-                "Please allow location access and try again."
-            );
-
-        }
-
-    );
-
-}
-
-
-</script>
-            
-
-</body>
-
-</html>
+        }                
