@@ -350,36 +350,95 @@ function Submit() {
         return;
     }
 
-    alert("📍 Please allow location permission.");
+    alert("📍 Please allow location access.");
 
     navigator.geolocation.getCurrentPosition(
 
-        function(position) {
+        async function(position) {
 
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
 
+            // Keep exact GPS coordinates
             document.getElementById("location").value =
                 "Latitude: " + latitude +
                 ", Longitude: " + longitude;
 
-            alert(
-                "✅ GPS Location Found!\n\n" +
-                "Latitude: " + latitude +
-                "\nLongitude: " + longitude
-            );
+            try {
+
+                // Convert GPS coordinates into a readable address
+                const response = await fetch(
+                    "https://nominatim.openstreetmap.org/reverse" +
+                    "?format=jsonv2" +
+                    "&lat=" + latitude +
+                    "&lon=" + longitude +
+                    "&addressdetails=1"
+                );
+
+                if (!response.ok) {
+                    throw new Error("Address service unavailable.");
+                }
+
+                const data = await response.json();
+                const address = data.address || {};
+
+                // House / Plot
+                document.getElementById("house").value =
+                    address.house_number || "";
+
+                // Street / Locality
+                document.getElementById("street").value =
+                    address.road ||
+                    address.neighbourhood ||
+                    address.suburb ||
+                    "";
+
+                // City
+                document.getElementById("city").value =
+                    address.city ||
+                    address.town ||
+                    address.village ||
+                    "";
+
+                // State
+                document.getElementById("state").value =
+                    address.state || "";
+
+                // PIN Code
+                document.getElementById("pincode").value =
+                    address.postcode || "";
+
+                // Country
+                document.getElementById("country").value =
+                    address.country || "";
+
+                alert(
+                    "✅ Location and address found! 📍\n\n" +
+                    "GPS: " +
+                    latitude + ", " + longitude
+                );
+
+            } catch (error) {
+
+                console.error("Address error:", error);
+
+                alert(
+                    "📍 GPS was found successfully!\n\n" +
+                    "However, the readable address could not be retrieved."
+                );
+            }
         },
 
         function(error) {
 
+            console.error("GPS error:", error);
+
             alert(
-                "❌ GPS could not be obtained.\n\n" +
+                "❌ Could not get your location.\n\n" +
                 "Error code: " + error.code +
                 "\n" +
                 error.message
             );
-
-            console.error("GPS error:", error);
         },
 
         {
@@ -389,7 +448,7 @@ function Submit() {
         }
     );
         }
- </script>
+    </script>
 
 </body>
 
