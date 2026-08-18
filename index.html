@@ -344,7 +344,50 @@ function Submit() {
     });
            }
         function getLocation() {
-    alert("LOCATION FUNCTION IS WORKING! 📍");
+
+    if (!navigator.geolocation) {
+        alert("❌ GPS is not supported by this browser.");
+        return;
+    }
+
+    alert("📍 Please allow location permission.");
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            document.getElementById("location").value =
+                "Latitude: " + latitude +
+                ", Longitude: " + longitude;
+
+            alert(
+                "✅ GPS Location Found!\n\n" +
+                "Latitude: " + latitude +
+                "\nLongitude: " + longitude
+            );
+        },
+
+        function(error) {
+
+            alert(
+                "❌ GPS could not be obtained.\n\n" +
+                "Error code: " + error.code +
+                "\n" +
+                error.message
+            );
+
+            console.error("GPS error:", error);
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+        }
+    );
         }
  </script>
 
