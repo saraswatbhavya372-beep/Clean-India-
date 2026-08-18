@@ -344,51 +344,8 @@ function Submit() {
     });
            }
         function getLocation() {
-
-    if (!navigator.geolocation) {
-        alert("❌ Location is not supported by this browser.");
-        return;
-    }
-
-    alert("📍 Please allow location access.");
-
-    navigator.geolocation.getCurrentPosition(
-
-        function(position) {
-
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            document.getElementById("location").value =
-                "Latitude: " + latitude +
-                ", Longitude: " + longitude;
-
-            alert(
-                "✅ Location found!\n\n" +
-                "Latitude: " + latitude +
-                "\nLongitude: " + longitude
-            );
-        },
-
-        function(error) {
-
-            console.error("Location error:", error);
-
-            alert(
-                "❌ Could not get your location.\n\n" +
-                "Please allow location permission and try again."
-            );
-        },
-
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
+    alert("LOCATION FUNCTION IS WORKING! 📍");
         }
-
-    );
-        }
-        
  </script>
 
 </body>
