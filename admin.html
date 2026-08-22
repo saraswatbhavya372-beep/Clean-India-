@@ -1,15 +1,317 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Clean India Admin</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f5e9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .box {
+            max-width: 700px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h1, h2 {
+            color: #137333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #137333;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 8px 5px 8px 0;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0b5d29;
+        }
+
+        .report {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            background: #f9fff9;
+        }
+
+        #dashboard {
+            display: none;
+        }
+
+        #message {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>🇮🇳 Clean India</h1>
-    <h2>🔐 Admin Dashboard</h2>
+<div class="box" id="loginBox">
 
-    <p>Admin page is working! ✅</p>
+    <h1>🇮🇳 Clean India</h1>
+    <h2>🔐 Admin Login</h2>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Admin Email"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
+
+    <button onclick="login()">
+        🔐 Login
+    </button>
+
+    <p id="message"></p>
+
+</div>
+
+
+<div class="box" id="dashboard">
+
+    <h1>🇮🇳 Clean India</h1>
+
+    <h2>📊 Admin Dashboard</h2>
+
+    <button onclick="loadReports()">
+        🔄 Load Reports
+    </button>
+
+    <button onclick="logout()">
+        🚪 Logout
+    </button>
+
+    <div id="reports">
+        <p>Click "Load Reports" to see reports.</p>
+    </div>
+
+</div>
+
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+<script>
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
+    authDomain: "clean-india-da788.firebaseapp.com",
+    projectId: "clean-india-da788",
+    storageBucket: "clean-india-da788.firebasestorage.app",
+    messagingSenderId: "612973022697",
+    appId: "1:612973022697:web:53d8345127195e4d81cf78",
+    measurementId: "G-8K3BQDW288"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+
+// ======================
+// LOGIN
+// ======================
+
+function login() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("message");
+
+    if (!email || !password) {
+
+        message.innerText =
+            "Please enter email and password.";
+
+        return;
+    }
+
+    auth.signInWithEmailAndPassword(email, password)
+
+    .then(function() {
+
+        document.getElementById("loginBox").style.display =
+            "none";
+
+        document.getElementById("dashboard").style.display =
+            "block";
+
+        message.innerText = "";
+
+    })
+
+    .catch(function(error) {
+
+        message.innerText =
+            "❌ Login failed: " + error.message;
+
+    });
+}
+
+
+// ======================
+// LOGOUT
+// ======================
+
+function logout() {
+
+    auth.signOut()
+    .then(function() {
+
+        document.getElementById("dashboard").style.display =
+            "none";
+
+        document.getElementById("loginBox").style.display =
+            "block";
+
+    });
+
+}
+
+
+// ======================
+// LOAD REPORTS
+// ======================
+
+function loadReports() {
+
+    const reportsDiv =
+        document.getElementById("reports");
+
+    reportsDiv.innerHTML =
+        "<p>Loading reports... ⏳</p>";
+
+    db.collection("reports")
+        .orderBy("timestamp", "desc")
+        .get()
+
+        .then(function(snapshot) {
+
+            if (snapshot.empty) {
+
+                reportsDiv.innerHTML =
+                    "<p>📭 No reports found.</p>";
+
+                return;
+            }
+
+            reportsDiv.innerHTML = "";
+
+            snapshot.forEach(function(doc) {
+
+                const data = doc.data();
+
+                const report =
+                    document.createElement("div");
+
+                report.className = "report";
+
+                report.innerHTML = `
+
+                    <h3>📝 Report</h3>
+
+                    <p>
+                        <strong>Name:</strong>
+                        ${data.name || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        ${data.location || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Description:</strong>
+                        ${data.description || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${data.status || "Pending"}
+                    </p>
+
+                `;
+
+                reportsDiv.appendChild(report);
+
+            });
+
+        })
+
+        .catch(function(error) {
+
+            reportsDiv.innerHTML =
+                "<p>❌ Error loading reports: "
+                + error.message +
+                "</p>";
+
+        });
+}
+
+
+// ======================
+// CHECK LOGIN
+// ======================
+
+auth.onAuthStateChanged(function(user) {
+
+    if (user) {
+
+        document.getElementById("loginBox").style.display =
+            "none";
+
+        document.getElementById("dashboard").style.display =
+            "block";
+
+    }
+
+});
+
+</script>
 
 </body>
+
 </html>
