@@ -110,7 +110,36 @@
 
         <div class="box">
             <h2>📋 Submitted Reports</h2>
+                <div class="stats">
 
+    <div class="stat">
+        <h3 id="totalCount">0</h3>
+        <p>📊 Total</p>
+    </div>
+
+    <div class="stat">
+        <h3 id="pendingCount">0</h3>
+        <p>🟠 Pending</p>
+    </div>
+
+    <div class="stat">
+        <h3 id="resolvedCount">0</h3>
+        <p>🟢 Resolved</p>
+    </div>
+
+    <div class="stat">
+        <h3 id="rejectedCount">0</h3>
+        <p>🔴 Rejected</p>
+    </div>
+
+</div>
+
+<input
+    type="text"
+    id="searchBox"
+    placeholder="🔎 Search reports..."
+    oninput="searchReports()"
+>
             <div id="reports">
                 Loading reports... ⏳
             </div>
@@ -222,25 +251,211 @@
 
 
         // LOAD REPORTS
-        function loadReports() {
+        
+let allReports = [];
 
-            const reportsDiv =
-                document.getElementById("reports");
+function loadReports() {
 
-            db.collection("reports")
-                .orderBy("timestamp", "desc")
-                .onSnapshot(function(snapshot) {
+    const reportsDiv = document.getElementById("reports");
 
-                    reportsDiv.innerHTML = "";
+    db.collection("reports")
+        .orderBy("timestamp", "desc")
+        .onSnapshot(function(snapshot) {
 
-                    if (snapshot.empty) {
+            allReports = [];
 
-                        reportsDiv.innerHTML =
-                            "<p>No reports submitted yet.</p>";
+            snapshot.forEach(function(doc) {
 
-                        return;
-                    }
+                allReports.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
 
+            });
+
+            updateCounters();
+            displayReports(allReports);
+
+        }, function(error) {
+
+            reportsDiv.innerHTML =
+                "<p class='error'>❌ Cannot load reports: " +
+                error.message +
+                "</p>";
+        });
+}
+
+
+function updateCounters() {
+
+    const total = allReports.length;
+
+    const pending =
+        allReports.filter(r => r.status === "pending").length;
+
+    const resolved =
+        allReports.filter(r => r.status === "resolved").length;
+
+    const rejected =
+        allReports.filter(r => r.status === "rejected").length;
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("pendingCount").textContent = pending;
+    document.getElementById("resolvedCount").textContent = resolved;
+    document.getElementById("rejectedCount").textContent = rejected;
+}
+
+
+function displayReports(reports) {
+
+    const reportsDiv =
+        document.getElementById("reports");
+
+    reportsDiv.innerHTML = "";
+
+    if (reports.length === 0) {
+
+        reportsDiv.innerHTML =
+            "<p>No reports found. 🔍</p>";
+
+        return;
+    }
+
+
+    reports.forEach(function(report) {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "box report";
+
+
+        div.innerHTML = `
+
+            <h3>🚨 ${escapeHTML(report.name || "No name")}</h3>
+
+            <p>
+                📍 <b>Location:</b><br>
+                ${escapeHTML(report.location || "Not available")}
+            </p>
+
+            <p>
+                📝 <b>Description:</b><br>
+                ${escapeHTML(report.description || "No description")}
+            </p>
+
+            <p>
+                <b>Status:</b>
+                <span class="status ${report.status}">
+                    ${escapeHTML(report.status || "pending")}
+                </span>
+            </p>
+
+            <div class="actions">
+
+                <button
+                    onclick="updateStatus('${report.id}', 'resolved')">
+                    ✅ Resolve
+                </button>
+
+                <button
+                    onclick="updateStatus('${report.id}', 'rejected')">
+                    ❌ Reject
+                </button>
+
+                <button
+                    class="deleteButton"
+                    onclick="deleteReport('${report.id}')">
+                    🗑️ Delete
+                </button>
+
+            </div>
+
+        `;
+
+        reportsDiv.appendChild(div);
+
+    });
+}
+
+
+function searchReports() {
+
+    const search =
+        document.getElementById("searchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filtered =
+        allReports.filter(function(report) {
+
+            return (
+                (report.name || "").toLowerCase().includes(search) ||
+                (report.location || "").toLowerCase().includes(search) ||
+                (report.description || "").toLowerCase().includes(search) ||
+                (report.status || "").toLowerCase().includes(search)
+            );
+
+        });
+
+    displayReports(filtered);
+}
+
+
+function updateStatus(id, newStatus) {
+
+    db.collection("reports")
+        .doc(id)
+        .update({
+            status: newStatus
+        })
+        .then(function() {
+
+            alert(
+                newStatus === "resolved"
+                ? "✅ Report marked as resolved!"
+                : "❌ Report rejected!"
+            );
+
+        })
+        .catch(function(error) {
+
+            alert(
+                "Firebase Error: " + error.message
+            );
+
+        });
+}
+
+
+function deleteReport(id) {
+
+    const confirmDelete =
+        confirm(
+            "⚠️ Are you sure you want to permanently delete this report?"
+        );
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    db.collection("reports")
+        .doc(id)
+        .delete()
+        .then(function() {
+
+            alert("🗑️ Report deleted successfully!");
+
+        })
+        .catch(function(error) {
+
+            alert(
+                "Firebase Error: " + error.message
+            );
+
+        });
+        }
 
                     snapshot.forEach(function(doc) {
 
@@ -305,7 +520,71 @@
                 .replace(/'/g, "&#039;");
 
         }
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 15px 0;
+}
 
+.stat {
+    background: #f5f7f6;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat h3 {
+    font-size: 28px;
+    margin: 5px;
+}
+
+.stat p {
+    margin: 5px;
+}
+
+#searchBox {
+    width: 100%;
+    padding: 14px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.actions button {
+    flex: 1;
+    min-width: 100px;
+}
+
+.deleteButton {
+    background: #dc2626 !important;
+}
+
+.status {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.status.pending {
+    color: #d97706;
+}
+
+.status.resolved {
+    color: #16a34a;
+}
+
+.status.rejected {
+    color: #dc2626;
+}
     </script>
 
 </body>
