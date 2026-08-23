@@ -1,31 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Clean India Admin</title>
+    <title>Clean India Admin Dashboard</title>
 
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #e8f5e9;
+            background: #f2f5f3;
             margin: 0;
             padding: 20px;
         }
 
-        .box {
-            max-width: 700px;
-            margin: 30px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        h1 {
+            color: #166534;
         }
 
-        h1, h2 {
-            color: #137333;
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         input {
@@ -33,285 +31,260 @@
             padding: 12px;
             margin: 8px 0;
             box-sizing: border-box;
-            border: 1px solid #aaa;
+            border: 1px solid #ccc;
             border-radius: 8px;
         }
 
         button {
-            background: #137333;
-            color: white;
-            border: none;
             padding: 12px 18px;
+            border: none;
             border-radius: 8px;
+            background: #16a34a;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
-            margin: 8px 5px 8px 0;
-            font-weight: bold;
         }
 
         button:hover {
-            background: #0b5d29;
+            background: #15803d;
         }
 
         .report {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 10px;
-            background: #f9fff9;
+            border-left: 5px solid #16a34a;
+            margin-top: 15px;
+        }
+
+        .pending {
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
         }
 
         #dashboard {
             display: none;
-        }
-
-        #message {
-            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-<div class="box" id="loginBox">
-
-    <h1>🇮🇳 Clean India</h1>
-    <h2>🔐 Admin Login</h2>
-
-    <input
-        type="email"
-        id="email"
-        placeholder="Admin Email"
-    >
-
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
-
-    <button onclick="login()">
-        🔐 Login
-    </button>
-
-    <p id="message"></p>
-
-</div>
-
-
-<div class="box" id="dashboard">
-
     <h1>🇮🇳 Clean India</h1>
 
-    <h2>📊 Admin Dashboard</h2>
+    <!-- LOGIN -->
+    <div id="loginBox" class="box">
+        <h2>🔐 Admin Login</h2>
 
-    <button onclick="loadReports()">
-        🔄 Load Reports
-    </button>
+        <input
+            type="email"
+            id="email"
+            placeholder="Admin Email"
+        >
 
-    <button onclick="logout()">
-        🚪 Logout
-    </button>
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
 
-    <div id="reports">
-        <p>Click "Load Reports" to see reports.</p>
+        <button onclick="login()">Login</button>
+
+        <p id="loginMessage"></p>
     </div>
 
-</div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="dashboard">
+
+        <div class="box">
+            <h2>📊 Admin Dashboard</h2>
+
+            <p>
+                Welcome, Admin! 👋
+            </p>
+
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <div class="box">
+            <h2>📋 Submitted Reports</h2>
+
+            <div id="reports">
+                Loading reports... ⏳
+            </div>
+        </div>
+
+    </div>
 
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
 
-<script>
+    <script>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
-    authDomain: "clean-india-da788.firebaseapp.com",
-    projectId: "clean-india-da788",
-    storageBucket: "clean-india-da788.firebasestorage.app",
-    messagingSenderId: "612973022697",
-    appId: "1:612973022697:web:53d8345127195e4d81cf78",
-    measurementId: "G-8K3BQDW288"
-};
+        // Firebase Configuration
+        
 
-firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-
-const db = firebase.firestore();
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
 
-// ======================
-// LOGIN
-// ======================
+        // LOGIN
+        function login() {
 
-function login() {
+            const email =
+                document.getElementById("email").value;
 
-    const email =
-        document.getElementById("email").value.trim();
+            const password =
+                document.getElementById("password").value;
 
-    const password =
-        document.getElementById("password").value;
+            const message =
+                document.getElementById("loginMessage");
 
-    const message =
-        document.getElementById("message");
-
-    if (!email || !password) {
-
-        message.innerText =
-            "Please enter email and password.";
-
-        return;
-    }
-
-    auth.signInWithEmailAndPassword(email, password)
-
-    .then(function() {
-
-        document.getElementById("loginBox").style.display =
-            "none";
-
-        document.getElementById("dashboard").style.display =
-            "block";
-
-        message.innerText = "";
-
-    })
-
-    .catch(function(error) {
-
-        message.innerText =
-            "❌ Login failed: " + error.message;
-
-    });
-}
-
-
-// ======================
-// LOGOUT
-// ======================
-
-function logout() {
-
-    auth.signOut()
-    .then(function() {
-
-        document.getElementById("dashboard").style.display =
-            "none";
-
-        document.getElementById("loginBox").style.display =
-            "block";
-
-    });
-
-}
-
-
-// ======================
-// LOAD REPORTS
-// ======================
-
-function loadReports() {
-
-    const reportsDiv =
-        document.getElementById("reports");
-
-    reportsDiv.innerHTML =
-        "<p>Loading reports... ⏳</p>";
-
-    db.collection("reports")
-        .orderBy("timestamp", "desc")
-        .get()
-
-        .then(function(snapshot) {
-
-            if (snapshot.empty) {
-
-                reportsDiv.innerHTML =
-                    "<p>📭 No reports found.</p>";
-
+            if (!email || !password) {
+                message.innerHTML =
+                    "❌ Please enter email and password.";
                 return;
             }
 
-            reportsDiv.innerHTML = "";
+            auth.signInWithEmailAndPassword(email, password)
 
-            snapshot.forEach(function(doc) {
+            .then(function() {
 
-                const data = doc.data();
+                message.innerHTML =
+                    "✅ Login successful!";
 
-                const report =
-                    document.createElement("div");
+            })
 
-                report.className = "report";
+            .catch(function(error) {
 
-                report.innerHTML = `
+                console.error(error);
 
-                    <h3>📝 Report</h3>
-
-                    <p>
-                        <strong>Name:</strong>
-                        ${data.name || "Not provided"}
-                    </p>
-
-                    <p>
-                        <strong>Location:</strong>
-                        ${data.location || "Not provided"}
-                    </p>
-
-                    <p>
-                        <strong>Description:</strong>
-                        ${data.description || "Not provided"}
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-                        ${data.status || "Pending"}
-                    </p>
-
-                `;
-
-                reportsDiv.appendChild(report);
-
+                message.innerHTML =
+                    "❌ Login failed: " + error.message;
             });
+        }
 
-        })
 
-        .catch(function(error) {
+        // CHECK LOGIN STATUS
+        auth.onAuthStateChanged(function(user) {
 
-            reportsDiv.innerHTML =
-                "<p>❌ Error loading reports: "
-                + error.message +
-                "</p>";
+            if (user) {
+
+                document.getElementById("loginBox")
+                    .style.display = "none";
+
+                document.getElementById("dashboard")
+                    .style.display = "block";
+
+                loadReports();
+
+            } else {
+
+                document.getElementById("loginBox")
+                    .style.display = "block";
+
+                document.getElementById("dashboard")
+                    .style.display = "none";
+            }
 
         });
-}
 
 
-// ======================
-// CHECK LOGIN
-// ======================
+        // LOAD REPORTS
+        function loadReports() {
 
-auth.onAuthStateChanged(function(user) {
+            const reportsDiv =
+                document.getElementById("reports");
 
-    if (user) {
+            db.collection("reports")
+                .orderBy("timestamp", "desc")
+                .onSnapshot(function(snapshot) {
 
-        document.getElementById("loginBox").style.display =
-            "none";
+                    reportsDiv.innerHTML = "";
 
-        document.getElementById("dashboard").style.display =
-            "block";
+                    if (snapshot.empty) {
 
-    }
+                        reportsDiv.innerHTML =
+                            "<p>No reports submitted yet.</p>";
 
-});
+                        return;
+                    }
 
-</script>
+
+                    snapshot.forEach(function(doc) {
+
+                        const report = doc.data();
+
+                        const div =
+                            document.createElement("div");
+
+                        div.className =
+                            "box report";
+
+                        div.innerHTML = `
+                            <h3>🚨 ${escapeHTML(report.name || "No name")}</h3>
+
+                            <p>
+                                📍 <b>Location:</b>
+                                ${escapeHTML(report.location || "Not available")}
+                            </p>
+
+                            <p>
+                                📝 <b>Description:</b>
+                                ${escapeHTML(report.description || "No description")}
+                            </p>
+
+                            <p class="pending">
+                                Status:
+                                ${escapeHTML(report.status || "pending")}
+                            </p>
+                        `;
+
+                        reportsDiv.appendChild(div);
+
+                    });
+
+                }, function(error) {
+
+                    reportsDiv.innerHTML =
+                        "<p class='error'>❌ Cannot load reports: "
+                        + error.message +
+                        "</p>";
+
+                });
+        }
+
+
+        // LOGOUT
+        function logout() {
+
+            auth.signOut();
+
+        }
+
+
+        // Prevent HTML injection from submitted text
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+    </script>
 
 </body>
-
-</html>
+</html>    
