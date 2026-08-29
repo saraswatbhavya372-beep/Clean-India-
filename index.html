@@ -82,7 +82,24 @@
         }
 
         button:hover {
-            background-color: #0b5d29;
+            body {
+    font-family: Arial, sans-serif;
+
+    background:
+        linear-gradient(
+            rgba(232, 245, 233, 0.88),
+            rgba(232, 245, 233, 0.88)
+        ),
+        url("https://images.pexels.com/photos/5218022/pexels-photo-5218022.jpeg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    margin: 0;
+    padding: 0;
+            }
         }
     </style>
 </head>
@@ -309,145 +326,177 @@
         // =========================
 function Submit() {
 
-    const name = document.getElementById("name").value.trim();
-    const location = document.getElementById("location").value.trim();
-    const description = document.getElementById("description").value.trim();
+    const name =
+        document.getElementById("name").value.trim();
+
+    const location =
+        document.getElementById("location").value.trim();
+
+    const description =
+        document.getElementById("description").value.trim();
+
+    const photoInput =
+        document.getElementById("photo");
 
     if (!name || !location || !description) {
         alert("Please fill Name, Location and Description.");
         return;
     }
 
-    alert("Saving report... ⏳");
+    // Check whether a photo was selected
+    if (photoInput.files.length > 0) {
 
-    db.collection("reports").add({
-        name: name,
-        location: location,
-        description: description,
-        status: "pending",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    })
-    .then(function() {
+        const file = photoInput.files[0];
 
-        alert("✅ REPORT SUBMITTED SUCCESSFULLY!");
+        // Only allow images
+        if (!file.type.startsWith("image/")) {
+            alert("❌ Please select an image file.");
+            return;
+        }
 
-    })
-    .catch(function(error) {
+        // Read the selected image
+        const reader = new FileReader();
 
-        console.error(error);
+        reader.onload = function(event) {
 
-        alert(
-            "❌ Firebase Error:\n\n" +
-            error.message
-        );
+            const img = new Image();
 
-    });
-           }
-        function getLocation() {
+            img.onload = function() {
 
-    if (!navigator.geolocation) {
-        alert("❌ GPS is not supported by this browser.");
-        return;
-    }
+                // Compress image using canvas
+                const canvas = document.createElement("canvas");
 
-    alert("📍 Please allow location access.");
+                const maxSize = 900;
 
-    navigator.geolocation.getCurrentPosition(
+                let width = img.width;
+                let height = img.height;
 
-        async function(position) {
+                if (width > height) {
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+                    if (width > maxSize) {
+                        height =
+                            height * maxSize / width;
+                        width = maxSize;
+                    }
 
-            // Keep GPS coordinates
-            document.getElementById("location").value =
-                "Latitude: " + latitude +
-                ", Longitude: " + longitude;
+                } else {
 
-            try {
-
-                const url =
-                    "https://nominatim.openstreetmap.org/reverse" +
-                    "?format=jsonv2" +
-                    "&lat=" + latitude +
-                    "&lon=" + longitude +
-                    "&addressdetails=1" +
-                    "&accept-language=en";
-
-                const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error("Address service unavailable.");
+                    if (height > maxSize) {
+                        width =
+                            width * maxSize / height;
+                        height = maxSize;
+                    }
                 }
 
-                const data = await response.json();
-                const address = data.address || {};
+                canvas.width = width;
+                canvas.height = height;
 
-                // 🏠 House / Plot
-                document.getElementById("house").value =
-                    address.house_number || "";
+                const ctx = canvas.getContext("2d");
 
-                // 🛣️ Street / Locality
-                document.getElementById("street").value =
-                    address.road ||
-                    address.neighbourhood ||
-                    address.suburb ||
-                    "";
-
-                // 🏙️ City
-                document.getElementById("city").value =
-                    address.city ||
-                    address.town ||
-                    address.village ||
-                    address.municipality ||
-                    "";
-
-                // 🏛️ State
-                document.getElementById("state").value =
-                    address.state || "";
-
-                // 📮 PIN Code
-                document.getElementById("pincode").value =
-                    address.postcode || "";
-
-                // 🌍 Country
-                document.getElementById("country").value =
-                    address.country || "";
-
-                alert(
-                    "✅ GPS + Address found!\n\n" +
-                    "📍 Latitude: " + latitude +
-                    "\n📍 Longitude: " + longitude
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    width,
+                    height
                 );
 
-            } catch (error) {
+                canvas.toBlob(
+                    function(blob) {
 
-                console.error("Address error:", error);
+                        if (!blob) {
+                            alert("❌ Could not process the photo.");
+                            return;
+                        }
 
-                alert(
-                    "📍 GPS location found!\n\n" +
-                    "⚠️ The readable address could not be found."
+                        // Keep the image reasonably small
+                        if (blob.size > 500000) {
+                            alert(
+                                "❌ Photo is still too large.\n\n" +
+                                "Please choose a smaller image."
+                            );
+                            return;
+                        }
+
+                        const imageReader =
+                            new FileReader();
+
+                        imageReader.onloadend =
+                            function() {
+
+                                saveReport(
+                                    imageReader.result
+                                );
+
+                            };
+
+                        imageReader.readAsDataURL(blob);
+
+                    },
+                    "image/jpeg",
+                    0.65
                 );
-            }
-        },
 
-        function(error) {
+            };
 
-            console.error("GPS error:", error);
+            img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+
+    } else {
+
+        // Submit without a photo
+        saveReport(null);
+    }
+
+
+    // Save report to Firestore
+    function saveReport(photoData) {
+
+        alert("Saving report... ⏳");
+
+        db.collection("reports").add({
+
+            name: name,
+
+            location: location,
+
+            description: description,
+
+            photo: photoData,
+
+            status: "pending",
+
+            timestamp:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+        })
+        .then(function() {
 
             alert(
-                "❌ Could not get your GPS location.\n\n" +
-                "Error: " + error.message
+                "✅ REPORT SUBMITTED SUCCESSFULLY!"
             );
-        },
 
-        {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 0
-        }
-    );
-        }
+            // Clear form
+            document.getElementById("name").value = "";
+            document.getElementById("location").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("photo").value = "";
+
+        })
+        .catch(function(error) {
+
+            console.error(error);
+
+            alert(
+                "❌ Firebase Error:\n\n" +
+                error.message
+            );
+
+        });
+    }
+}
     </script>
 
 </body>
