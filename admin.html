@@ -1,809 +1,101 @@
-  <!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Clean India Admin Dashboard</title>
-
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f5f3;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #166534;
-        }
-
-        .box {
-            background: white;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-
-        button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            background: #16a34a;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #15803d;
-        }
-
-        .report {
-            border-left: 5px solid #16a34a;
-            margin-top: 15px;
-        }
-
-        .pending {
-            color: #d97706;
-            font-weight: bold;
-        }
-
-        .resolved {
-            color: #16a34a;
-            font-weight: bold;
-        }
-
-        .rejected {
-            color: #dc2626;
-            font-weight: bold;
-        }
-
-        .error {
-            color: red;
-        }
-
-        #dashboard {
-            display: none;
-        }
-
-        /* COUNTERS */
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin: 15px 0;
-        }
-
-        .stat {
-            background: #f5f7f6;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat h3 {
-            font-size: 28px;
-            margin: 5px;
-        }
-
-        .stat p {
-            margin: 5px;
-        }
-
-        /* SEARCH */
-
-        #searchBox {
-            width: 100%;
-            padding: 14px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        /* ACTION BUTTONS */
-
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .actions button {
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .rejectButton {
-            background: #dc2626;
-        }
-
-        .rejectButton:hover {
-            background: #b91c1c;
-        }
-
-        .deleteButton {
-            background: #7f1d1d;
-        }
-
-        .deleteButton:hover {
-            background: #450a0a;
-        }
-
-    </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clean India | Admin Dashboard</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef7ef;color:#173222;font-family:Arial,sans-serif}header{background:#0c4924;color:#fff;padding:20px}main{max-width:1050px;margin:20px auto;padding:0 14px}.panel,.report{background:white;padding:18px;border-radius:14px;margin:16px 0;box-shadow:0 3px 15px #0001}input{width:100%;padding:12px;border:1px solid #b8cbbd;border-radius:8px;margin:6px 0 12px}button,a.btn{border:0;border-radius:8px;background:#137333;color:#fff;padding:10px 14px;cursor:pointer;text-decoration:none;font-weight:bold;margin:4px}button.secondary{background:#e4f3e6;color:#0c4924}label{font-weight:bold}img{max-width:100%;max-height:300px;border-radius:10px;display:block;margin:10px 0}.meta{color:#53685a;font-size:.9rem;overflow-wrap:anywhere}.status{font-weight:bold;color:#137333}.error{color:#a11}.hidden{display:none!important}.report textarea,.report select{padding:10px;border:1px solid #bdcdbf;border-radius:8px;max-width:100%}.report textarea{width:100%;min-height:65px}.toprow{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+</style>
 </head>
-
 <body>
-
-    <h1>🇮🇳 Clean India</h1>
-
-
-    <!-- LOGIN -->
-
-    <div id="loginBox" class="box">
-
-        <h2>🔐 Admin Login</h2>
-
-        <input
-            type="email"
-            id="email"
-            placeholder="Admin Email"
-        >
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-        >
-
-        <button onclick="login()">Login</button>
-
-        <p id="loginMessage"></p>
-
-    </div>
-
-
-    <!-- ADMIN DASHBOARD -->
-
-    <div id="dashboard">
-
-        <div class="box">
-
-            <h2>📊 Admin Dashboard</h2>
-
-            <p>
-                Welcome, Admin! 👋
-            </p>
-
-            <button onclick="logout()">Logout</button>
-
-        </div>
-
-
-        <!-- STATISTICS -->
-
-        <div class="box">
-
-            <h2>📊 Report Statistics</h2>
-
-            <div class="stats">
-
-                <div class="stat">
-                    <h3 id="totalCount">0</h3>
-                    <p>📋 Total</p>
-                </div>
-
-                <div class="stat">
-                    <h3 id="pendingCount">0</h3>
-                    <p>🟠 Pending</p>
-                </div>
-
-                <div class="stat">
-                    <h3 id="resolvedCount">0</h3>
-                    <p>🟢 Resolved</p>
-                </div>
-
-                <div class="stat">
-                    <h3 id="rejectedCount">0</h3>
-                    <p>🔴 Rejected</p>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- REPORTS -->
-
-        <div class="box">
-
-            <h2>📋 Submitted Reports</h2>
-
-            <input
-                type="text"
-                id="searchBox"
-                placeholder="🔎 Search reports..."
-                oninput="searchReports()"
-            >
-
-            <div id="reports">
-                Loading reports... ⏳
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- FIREBASE -->
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
-
-    <script>
-
-        // =========================
-        // FIREBASE CONFIGURATION
-        // =========================
-
-        const firebaseConfig = {
-
-            apiKey:
-                "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
-
-            authDomain:
-                "clean-india-da788.firebaseapp.com",
-
-            projectId:
-                "clean-india-da788",
-
-            storageBucket:
-                "clean-india-da788.firebasestorage.app",
-
-            messagingSenderId:
-                "612973022697",
-
-            appId:
-                "1:612973022697:web:53d8345127195e4d81cf78",
-
-            measurementId:
-                "G-8K3BQDW288"
-        };
-
-
-        firebase.initializeApp(firebaseConfig);
-
-
-        const db = firebase.firestore();
-
-        const auth = firebase.auth();
-
-
-        // Store all reports here
-
-        let allReports = [];
-
-
-        // =========================
-        // LOGIN
-        // =========================
-
-        function login() {
-
-            const email =
-                document.getElementById("email").value.trim();
-
-            const password =
-                document.getElementById("password").value;
-
-            const message =
-                document.getElementById("loginMessage");
-
-
-            if (!email || !password) {
-
-                message.innerHTML =
-                    "❌ Please enter email and password.";
-
-                return;
-            }
-
-
-            auth.signInWithEmailAndPassword(
-                email,
-                password
-            )
-
-            .then(function() {
-
-                message.innerHTML =
-                    "✅ Login successful!";
-
-            })
-
-            .catch(function(error) {
-
-                console.error(error);
-
-                message.innerHTML =
-                    "❌ Login failed: " + error.message;
-
-            });
-
-        }
-
-
-        // =========================
-        // CHECK LOGIN
-        // =========================
-
-        auth.onAuthStateChanged(function(user) {
-
-            if (user) {
-
-                document.getElementById("loginBox")
-                    .style.display = "none";
-
-                document.getElementById("dashboard")
-                    .style.display = "block";
-
-                loadReports();
-
-            } else {
-
-                document.getElementById("loginBox")
-                    .style.display = "block";
-
-                document.getElementById("dashboard")
-                    .style.display = "none";
-
-            }
-
-        });
-
-
-        // =========================
-        // LOAD REPORTS
-        // =========================
-
-        function loadReports() {
-
-            const reportsDiv =
-                document.getElementById("reports");
-
-
-            db.collection("reports")
-                .orderBy("timestamp", "desc")
-                .onSnapshot(function(snapshot) {
-
-                    allReports = [];
-
-
-                    snapshot.forEach(function(doc) {
-
-                        const report = doc.data();
-
-
-                        allReports.push({
-
-                            id: doc.id,
-
-                            ...report
-
-                        });
-
-                    });
-
-
-                    updateCounters();
-
-
-                    displayReports(allReports);
-
-
-                }, function(error) {
-
-                    console.error(error);
-
-
-                    reportsDiv.innerHTML =
-                        "<p class='error'>❌ Cannot load reports: "
-                        + error.message +
-                        "</p>";
-
-                });
-
-        }
-
-
-        // =========================
-        // UPDATE COUNTERS
-        // =========================
-
-        function updateCounters() {
-
-            const total =
-                allReports.length;
-
-
-            const pending =
-                allReports.filter(function(report) {
-
-                    return report.status === "pending";
-
-                }).length;
-
-
-            const resolved =
-                allReports.filter(function(report) {
-
-                    return report.status === "resolved";
-
-                }).length;
-
-
-            const rejected =
-                allReports.filter(function(report) {
-
-                    return report.status === "rejected";
-
-                }).length;
-
-
-            document.getElementById("totalCount")
-                .textContent = total;
-
-
-            document.getElementById("pendingCount")
-                .textContent = pending;
-
-
-            document.getElementById("resolvedCount")
-                .textContent = resolved;
-
-
-            document.getElementById("rejectedCount")
-                .textContent = rejected;
-
-        }
-
-
-        // =========================
-        // DISPLAY REPORTS
-        // =========================
-
-        function displayReports(reports) {
-
-            const reportsDiv =
-                document.getElementById("reports");
-
-
-            reportsDiv.innerHTML = "";
-
-
-            if (reports.length === 0) {
-
-                reportsDiv.innerHTML =
-                    "<p>No reports found. 🔍</p>";
-
-                return;
-
-            }
-
-
-            reports.forEach(function(report) {
-
-                const div =
-                    document.createElement("div");
-
-
-                div.className =
-                    "box report";
-
-
-                const status =
-                    report.status || "pending";
-
-
-                let statusClass =
-                    "pending";
-
-
-                if (status === "resolved") {
-
-                    statusClass = "resolved";
-
-                }
-
-
-                if (status === "rejected") {
-
-                    statusClass = "rejected";
-
-                }
-
-
-                div.innerHTML = `
-
-                    <h3>
-                        🚨
-                        ${escapeHTML(
-                            report.name || "No name"
-                        )}
-                    </h3>
-
-
-                    <p>
-
-                        📍 <b>Location:</b><br>
-
-                        ${escapeHTML(
-                            report.location ||
-                            "Not available"
-                        )}
-
-                    </p>
-
-
-                    <p>
-
-                        📝 <b>Description:</b><br>
-
-                        ${escapeHTML(
-                            report.description ||
-                            "No description"
-                        )}
-
-                    </p>
-
-
-                    <p class="${statusClass}">
-
-                        Status:
-                        ${escapeHTML(status)}
-
-                    </p>
-
-
-                    <div class="actions">
-
-                        <button
-                            onclick="updateStatus(
-                                '${report.id}',
-                                'resolved'
-                            )">
-
-                            ✅ Resolve
-
-                        </button>
-
-
-                        <button
-                            class="rejectButton"
-                            onclick="updateStatus(
-                                '${report.id}',
-                                'rejected'
-                            )">
-
-                            ❌ Reject
-
-                        </button>
-
-
-                        <button
-                            class="deleteButton"
-                            onclick="deleteReport(
-                                '${report.id}'
-                            )">
-
-                            🗑️ Delete
-
-                        </button>
-
-                    </div>
-
-                `;
-
-
-                reportsDiv.appendChild(div);
-
-            });
-
-        }
-
-
-        // =========================
-        // SEARCH
-        // =========================
-
-        function searchReports() {
-
-            const search =
-                document.getElementById("searchBox")
-                .value
-                .toLowerCase()
-                .trim();
-
-
-            const filtered =
-                allReports.filter(function(report) {
-
-                    return (
-
-                        (report.name || "")
-                            .toLowerCase()
-                            .includes(search)
-
-                        ||
-
-                        (report.location || "")
-                            .toLowerCase()
-                            .includes(search)
-
-                        ||
-
-                        (report.description || "")
-                            .toLowerCase()
-                            .includes(search)
-
-                        ||
-
-                        (report.status || "")
-                            .toLowerCase()
-                            .includes(search)
-
-                    );
-
-                });
-
-
-            displayReports(filtered);
-
-        }
-
-
-        // =========================
-        // UPDATE STATUS
-        // =========================
-
-        function updateStatus(id, newStatus) {
-
-            db.collection("reports")
-                .doc(id)
-                .update({
-
-                    status: newStatus
-
-                })
-
-                .then(function() {
-
-                    if (newStatus === "resolved") {
-
-                        alert(
-                            "✅ Report marked as resolved!"
-                        );
-
-                    } else {
-
-                        alert(
-                            "❌ Report rejected!"
-                        );
-
-                    }
-
-                })
-
-                .catch(function(error) {
-
-                    console.error(error);
-
-                    alert(
-                        "❌ Firebase Error:\n\n" +
-                        error.message
-                    );
-
-                });
-
-        }
-
-
-        // =========================
-        // DELETE REPORT
-        // =========================
-
-        function deleteReport(id) {
-
-            const confirmDelete =
-                confirm(
-                    "⚠️ Are you sure you want to permanently delete this report?"
-                );
-
-
-            if (!confirmDelete) {
-
-                return;
-
-            }
-
-
-            db.collection("reports")
-                .doc(id)
-                .delete()
-
-                .then(function() {
-
-                    alert(
-                        "🗑️ Report deleted successfully!"
-                    );
-
-                })
-
-                .catch(function(error) {
-
-                    console.error(error);
-
-                    alert(
-                        "❌ Firebase Error:\n\n" +
-                        error.message
-                    );
-
-                });
-
-        }
-
-
-        // =========================
-        // LOGOUT
-        // =========================
-
-        function logout() {
-
-            auth.signOut();
-
-        }
-
-
-        // =========================
-        // SECURITY
-        // =========================
-
-        function escapeHTML(value) {
-
-            return String(value)
-
-                .replace(/&/g, "&amp;")
-
-                .replace(/</g, "&lt;")
-
-                .replace(/>/g, "&gt;")
-
-                .replace(/"/g, "&quot;")
-
-                .replace(/'/g, "&#039;");
-
-        }
-
-    </script>
-
+<header><div class="toprow"><div><h1 style="margin:0">🇮🇳 Clean India Admin Dashboard</h1><p style="margin-bottom:0">Review and update cleanliness reports</p></div><a class="btn" href="index.html" style="background:#fff;color:#0c4924">← Main website</a></div></header>
+<main>
+<section class="panel">
+<h2>Administrator sign-in</h2>
+<p>Sign in using the administrator account. The email below must match the email configured in this page and in Firestore/Storage Rules.</p>
+<label for="email">Admin email</label><input id="email" type="email" autocomplete="username" placeholder="admin@example.com">
+<label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Password">
+<button id="signIn">Sign in</button><button id="signOut" class="secondary hidden">Sign out</button>
+<p id="message" role="status"></p>
+</section>
+<section id="dashboard" class="hidden">
+<div class="panel"><div class="toprow"><h2>Reports</h2><button id="refresh" class="secondary">Refresh</button></div><p class="meta">Report details are visible only to the configured admin account.</p><div id="reports"></div></div>
+<div class="panel"><h2>Volunteer registrations</h2><div id="volunteers"></div></div>
+</section>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script>
+"use strict";
+const firebaseConfig={
+ apiKey:"AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
+ authDomain:"clean-india-da788.firebaseapp.com",
+ projectId:"clean-india-da788",
+ storageBucket:"clean-india-da788.firebasestorage.app",
+ messagingSenderId:"612973022697",
+ appId:"1:612973022697:web:53d8345127195e4d81cf78",
+ measurementId:"G-8K3BQDW288"
+};
+// IMPORTANT: replace this with the exact email of your administrator Firebase account.
+const ADMIN_EMAIL="REPLACE_WITH_YOUR_ADMIN_EMAIL";
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(),db=firebase.firestore();
+const $=id=>document.getElementById(id);
+function message(text,error=false){$("message").textContent=text;$("message").className=error?"error":"status";}
+function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+$("signIn").addEventListener("click",async()=>{
+ const email=$("email").value.trim(),password=$("password").value;
+ if(!email||!password)return message("Enter admin email and password.",true);
+ try{await auth.signInWithEmailAndPassword(email,password);}
+ catch(e){message(e.message,true);}
+});
+$("signOut").addEventListener("click",()=>auth.signOut());
+$("refresh").addEventListener("click",loadData);
+auth.onAuthStateChanged(user=>{
+ const isAdmin=!!user && ADMIN_EMAIL!=="REPLACE_WITH_YOUR_ADMIN_EMAIL" && user.email && user.email.toLowerCase()===ADMIN_EMAIL.toLowerCase();
+ $("dashboard").classList.toggle("hidden",!isAdmin);
+ $("signOut").classList.toggle("hidden",!user);
+ $("signIn").classList.toggle("hidden",!!user);
+ if(!user){message("Sign in with your admin account.");$("reports").innerHTML="";$("volunteers").innerHTML="";}
+ else if(!isAdmin){message("This account is not the configured admin. Sign out and use the correct account.",true);$("dashboard").classList.add("hidden");}
+ else{message("Signed in as administrator.");loadData();}
+});
+async function loadData(){
+ $("reports").textContent="Loading reports…";$("volunteers").textContent="Loading volunteers…";
+ try{
+  const snap=await db.collection("reports").orderBy("timestamp","desc").limit(100).get();
+  if(snap.empty){$("reports").textContent="No reports yet."; }
+  else{
+   $("reports").innerHTML="";
+   snap.forEach(doc=>{
+    const r=doc.data(),el=document.createElement("article");el.className="report";
+    el.innerHTML=`<h3>${esc(r.description||"Cleanliness report")}</h3>
+    <p class="meta"><b>Reporter:</b> ${esc(r.name)} · <b>Submitted:</b> ${r.timestamp&&r.timestamp.toDate?r.timestamp.toDate().toLocaleString():"time pending"}</p>
+    <p><b>Address:</b> ${esc(r.address||r.location||"Not provided")}</p>
+    <p><b>Locality:</b> ${esc([r.house,r.street,r.city,r.state,r.pincode,r.country].filter(Boolean).join(", "))}</p>
+    <p><b>Status:</b> ${esc(r.status||"pending")}</p>
+    ${r.photoUrl?`<a href="${esc(r.photoUrl)}" target="_blank" rel="noopener">Open attached photo</a><img src="${esc(r.photoUrl)}" alt="Report attachment" loading="lazy">`:"<p class='meta'>No photo attached.</p>"}
+    <label>Status</label><select class="reportStatus"><option value="pending">Pending</option><option value="reviewing">Reviewing</option><option value="resolved">Resolved</option><option value="rejected">Rejected</option></select>
+    <label>Admin note (optional)</label><textarea class="adminNote" maxlength="1000" placeholder="Internal note or action taken"></textarea>
+    <button class="save">Save update</button><span class="meta saveMessage"></span>`;
+    const status=el.querySelector(".reportStatus");status.value=["pending","reviewing","resolved","rejected"].includes(r.status)?r.status:"pending";
+    el.querySelector(".adminNote").value=r.adminNote||"";
+    el.querySelector(".save").addEventListener("click",async()=>{
+      const b=el.querySelector(".save"),out=el.querySelector(".saveMessage");b.disabled=true;out.textContent="Saving…";
+      try{await db.collection("reports").doc(doc.id).update({status:status.value,adminNote:el.querySelector(".adminNote").value.trim(),updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.email});out.textContent="Saved ✓";}
+      catch(e){out.textContent="Error: "+e.message;}
+      finally{b.disabled=false;}
+    });
+    $("reports").appendChild(el);
+   });
+  }
+  const vs=await db.collection("volunteers").orderBy("timestamp","desc").limit(100).get();
+  if(vs.empty)$("volunteers").textContent="No volunteer registrations yet.";
+  else {$("volunteers").innerHTML="";vs.forEach(d=>{const v=d.data(),p=document.createElement("p");p.className="report";p.innerHTML=`<b>${esc(v.name)}</b> — ${esc(v.city)}<br><span class="meta">${esc(v.note||"No note")} · ${v.timestamp&&v.timestamp.toDate?v.timestamp.toDate().toLocaleString():"time pending"}</span>`;$("volunteers").appendChild(p);});}
+ }catch(e){$("reports").textContent="Could not load data: "+e.message;$("volunteers").textContent="Check your Firestore Rules and admin email configuration.";}
+}
+</script>
 </body>
-</html>      
+</html>
