@@ -1,504 +1,270 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Clean India</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e8f5e9;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #137333;
-            margin-top: 30px;
-        }
-
-        h2 {
-            color: #137333;
-        }
-
-        nav {
-            margin: 20px;
-        }
-
-        nav a {
-            color: green;
-            text-decoration: none;
-            margin: 10px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        section {
-            background-color: white;
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        section p {
-            color: #444;
-            font-size: 17px;
-            line-height: 1.6;
-        }
-
-        input,
-        textarea {
-            width: 90%;
-            max-width: 500px;
-            padding: 12px;
-            margin: 8px;
-            border: 1px solid #aaa;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            height: 120px;
-        }
-
-        button {
-            background-color: #137333;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin: 8px;
-        }
-
-        button:hover {
-            body {
-    font-family: Arial, sans-serif;
-
-    background:
-        linear-gradient(
-            rgba(232, 245, 233, 0.88),
-            rgba(232, 245, 233, 0.88)
-        ),
-        url("https://images.pexels.com/photos/5218022/pexels-photo-5218022.jpeg");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-
-    margin: 0;
-    padding: 0;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#137333">
+<title>Clean India | Cleaner streets, greener future</title>
+<style>
+:root{--green:#137333;--dark:#0c4924;--pale:#e8f5e9;--ink:#183024;--muted:#607067;--card:#fff;--line:#d7e5d9}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(#e8f5e9e8,#e8f5e9ed),url("https://images.pexels.com/photos/5218022/pexels-photo-5218022.jpeg") center/cover fixed}
+header{background:var(--dark);color:white;padding:14px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px #0002}
+.brand{font-size:1.35rem;font-weight:800}.brand small{display:block;font-size:.75rem;font-weight:400;margin-top:3px;color:#d5f2dc}
+nav{display:flex;gap:14px;flex-wrap:wrap}nav a{color:white;text-decoration:none;font-weight:bold;font-size:.92rem}nav a:hover{text-decoration:underline}
+main{padding:12px 16px 50px}.hero{max-width:1000px;margin:24px auto;padding:42px 22px;background:linear-gradient(120deg,#0b542eea,#137333d9),url("https://images.pexels.com/photos/2990644/pexels-photo-2990644.jpeg") center/cover;border-radius:22px;color:white;text-align:left}
+.hero h1{font-size:clamp(2rem,6vw,3.4rem);margin:0 0 12px}.hero p{font-size:1.1rem;line-height:1.6;max-width:680px}.hero .btn{background:#fff;color:var(--dark)}
+section.card{background:var(--card);max-width:900px;margin:22px auto;padding:24px;border-radius:18px;box-shadow:0 6px 24px #1232;border:1px solid #ffffffb0}
+h2{color:var(--green);margin-top:0}p{line-height:1.6}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{display:block;text-align:left;font-weight:bold;margin:10px 0 5px}
+input,textarea,select{display:block;width:100%;padding:12px;border:1px solid #b8cbbd;border-radius:9px;font:inherit;background:#fff;color:#182b20}
+textarea{min-height:100px;resize:vertical}button,.btn{border:0;border-radius:9px;padding:12px 17px;background:var(--green);color:#fff;font-weight:bold;font-size:.95rem;cursor:pointer;text-decoration:none;display:inline-block;margin:5px 4px 5px 0}
+button:hover,.btn:hover{filter:brightness(.92)}button:disabled{opacity:.55;cursor:wait}.secondary{background:#e8f5e9;color:var(--dark);border:1px solid #b9d9c0}.status{padding:10px 12px;border-radius:8px;background:#eef7ef;margin:12px 0;overflow-wrap:anywhere}.error{background:#fff0f0;color:#8a1c1c}.muted{color:var(--muted);font-size:.9rem}.hidden{display:none!important}.tip{background:#f4faf4;border:1px solid var(--line);padding:14px;border-radius:12px;text-align:left}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.footer{text-align:center;color:#41564a;padding:20px}
+#chatButton{position:fixed;right:16px;bottom:16px;z-index:10;border-radius:999px;box-shadow:0 5px 20px #0003;padding:15px 18px}
+#chatPanel{position:fixed;right:14px;bottom:78px;width:min(370px,calc(100vw - 28px));height:480px;max-height:70vh;background:white;border-radius:16px;box-shadow:0 8px 35px #0005;z-index:10;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+.chatHead{background:var(--dark);color:white;padding:14px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}.chatBody{padding:12px;overflow:auto;flex:1;background:#f7fbf7}.bubble{padding:10px 12px;border-radius:12px;margin:8px 0;max-width:90%;white-space:pre-wrap;line-height:1.45}.bot{background:#e5f3e7;margin-right:auto}.user{background:#d8e8ff;margin-left:auto}.chatForm{display:flex;padding:8px;gap:6px;border-top:1px solid var(--line)}.chatForm input{min-width:0}.chatForm button{margin:0}
+@media(max-width:600px){header{position:static}nav{gap:10px}.hero{padding:30px 18px}.card{padding:18px!important}}
+</style>
 </head>
-
 <body>
-
-    <h1>🇮🇳 Clean India</h1>
-
-    <p>Together, we can make India cleaner and greener.</p>
-
-    <nav>
-        <a href="#home">🏠 HOME</a>
-        <a href="#report">📝 REPORT ISSUE</a>
-        <a href="#tips">🌿 TIPS</a>
-        <a href="#volunteer">🙋 VOLUNTEER</a>
-    </nav>
-
-    <section id="home">
-
-        <h2>🌱 About Clean India</h2>
-
-        <p>
-            Clean India is a platform created to encourage people
-            to keep their surroundings clean, reduce waste and
-            protect our environment.
-        </p>
-
-        <p>
-            Together, citizens can report cleanliness problems,
-            learn eco-friendly habits and volunteer for a cleaner
-            and greener India. 🇮🇳
-        </p>
-
-    </section>
-
-
-    <section id="report">
-
-        <h2>📝 Report a Cleanliness Problem</h2>
-
-        <form>
-
-            <label for="name">Name:</label>
-            <br>
-
-            <input
-                type="text"
-                id="name"
-                placeholder="Enter your name"
-            >
-
-            <br>
-
-            <label>📍 Location:</label>
-            <br><br>
-
-            <input
-                type="text"
-                id="house"
-                placeholder="🏠 House / Plot No."
-            >
-
-            <br>
-
-            <input
-                type="text"
-                id="street"
-                placeholder="🛣️ Street / Locality"
-            >
-
-            <br>
-
-            <input
-                type="text"
-                id="city"
-                placeholder="🏙️ City"
-            >
-
-            <br>
-
-            <input
-                type="text"
-                id="state"
-                placeholder="🏛️ State"
-            >
-
-            <br>
-
-            <input
-                type="text"
-                id="pincode"
-                placeholder="📮 PIN Code"
-            >
-
-            <br>
-
-            <input
-                type="text"
-                id="country"
-                placeholder="🌍 Country"
-            >
-
-            <br>
-
-            <input
-                type="text"
-                id="location"
-                placeholder="📍 GPS Location"
-            >
-
-            <br>
-
-            <button
-                type="button"
-                onclick="getLocation()">
-                📍 USE MY LOCATION
-            </button>
-
-            <br><br>
-
-            <label for="description">
-                Problem Description:
-            </label>
-
-            <br>
-
-            <textarea
-                id="description"
-                placeholder="Describe the cleanliness problem">
-            </textarea>
-
-            <br>
-
-            <button
-    type="button"
-    onclick="Submit()">
-    📝 Submit The Report
-            </button>
-
-        </form>
-
-    </section>
-
-
-    <section id="tips">
-
-        <h2>🌿 Cleanliness Tips</h2>
-
-        <p>♻️ Separate dry and wet waste.</p>
-        <p>🗑️ Always use a dustbin.</p>
-        <p>🌳 Plant and protect trees.</p>
-        <p>🚯 Avoid throwing plastic on roads.</p>
-        <p>💧 Save water and keep water sources clean.</p>
-
-    </section>
-
-
-    <section id="volunteer">
-
-        <h2>🙋 Become a Volunteer</h2>
-
-        <p>
-            Join the movement and help make your community
-            cleaner and greener. 🌱
-        </p>
-
-        <button type="button">
-            🙋 Join Us
-        </button>
-
-    </section>
-
-
-    <!-- Firebase -->
-
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-
-    <script>
-
-        // =========================
-        // FIREBASE CONFIGURATION
-        // =========================
-
-        const firebaseConfig = {
-
-            apiKey:
-                "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
-
-            authDomain:
-                "clean-india-da788.firebaseapp.com",
-
-            projectId:
-                "clean-india-da788",
-
-            storageBucket:
-                "clean-india-da788.firebasestorage.app",
-
-            messagingSenderId:
-                "612973022697",
-
-            appId:
-                "1:612973022697:web:53d8345127195e4d81cf78",
-
-            measurementId:
-                "G-8K3BQDW288"
-        };
-
-
-        // Initialize Firebase
-
-        firebase.initializeApp(firebaseConfig);
-
-
-        // Firestore database
-
-        const db = firebase.firestore();
-
-
-        // =========================
-        // SUBMIT REPORT
-        // =========================
-function Submit() {
-
-    const name =
-        document.getElementById("name").value.trim();
-
-    const location =
-        document.getElementById("location").value.trim();
-
-    const description =
-        document.getElementById("description").value.trim();
-
-    const photoInput =
-        document.getElementById("photo");
-
-    if (!name || !location || !description) {
-        alert("Please fill Name, Location and Description.");
-        return;
-    }
-
-    // Check whether a photo was selected
-    if (photoInput.files.length > 0) {
-
-        const file = photoInput.files[0];
-
-        // Only allow images
-        if (!file.type.startsWith("image/")) {
-            alert("❌ Please select an image file.");
-            return;
-        }
-
-        // Read the selected image
-        const reader = new FileReader();
-
-        reader.onload = function(event) {
-
-            const img = new Image();
-
-            img.onload = function() {
-
-                // Compress image using canvas
-                const canvas = document.createElement("canvas");
-
-                const maxSize = 900;
-
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-
-                    if (width > maxSize) {
-                        height =
-                            height * maxSize / width;
-                        width = maxSize;
-                    }
-
-                } else {
-
-                    if (height > maxSize) {
-                        width =
-                            width * maxSize / height;
-                        height = maxSize;
-                    }
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-
-                const ctx = canvas.getContext("2d");
-
-                ctx.drawImage(
-                    img,
-                    0,
-                    0,
-                    width,
-                    height
-                );
-
-                canvas.toBlob(
-                    function(blob) {
-
-                        if (!blob) {
-                            alert("❌ Could not process the photo.");
-                            return;
-                        }
-
-                        // Keep the image reasonably small
-                        if (blob.size > 500000) {
-                            alert(
-                                "❌ Photo is still too large.\n\n" +
-                                "Please choose a smaller image."
-                            );
-                            return;
-                        }
-
-                        const imageReader =
-                            new FileReader();
-
-                        imageReader.onloadend =
-                            function() {
-
-                                saveReport(
-                                    imageReader.result
-                                );
-
-                            };
-
-                        imageReader.readAsDataURL(blob);
-
-                    },
-                    "image/jpeg",
-                    0.65
-                );
-
-            };
-
-            img.src = event.target.result;
-        };
-
-        reader.readAsDataURL(file);
-
-    } else {
-
-        // Submit without a photo
-        saveReport(null);
-    }
-
-
-    // Save report to Firestore
-    function saveReport(photoData) {
-
-        alert("Saving report... ⏳");
-
-        db.collection("reports").add({
-
-            name: name,
-
-            location: location,
-
-            description: description,
-
-            photo: photoData,
-
-            status: "pending",
-
-            timestamp:
-                firebase.firestore.FieldValue.serverTimestamp()
-
-        })
-        .then(function() {
-
-            alert(
-                "✅ REPORT SUBMITTED SUCCESSFULLY!"
-            );
-
-            // Clear form
-            document.getElementById("name").value = "";
-            document.getElementById("location").value = "";
-            document.getElementById("description").value = "";
-            document.getElementById("photo").value = "";
-
-        })
-        .catch(function(error) {
-
-            console.error(error);
-
-            alert(
-                "❌ Firebase Error:\n\n" +
-                error.message
-            );
-
-        });
-    }
+<header>
+  <div class="brand">🇮🇳 Clean India <small>Cleaner streets. Greener future.</small></div>
+  <nav><a href="#home">Home</a><a href="#report">Report</a><a href="#tips">Tips</a><a href="#volunteer">Volunteer</a><a href="admin.html">Admin</a></nav>
+  <div id="authArea"><button class="secondary" id="authOpenBtn" type="button">Sign in / Create account</button></div>
+</header>
+<main>
+<section id="home" class="hero">
+  <h1>Small actions. Cleaner communities.</h1>
+  <p>Report overflowing bins, litter and other cleanliness concerns. Share a location and photo so your community can understand the issue and follow its progress.</p>
+  <a class="btn" href="#report">📝 Report a problem</a>
+</section>
+
+<section class="card" id="accountCard">
+  <h2>🔐 Your account</h2>
+  <p id="authMessage">Sign in or create a free account to submit a report or volunteer.</p>
+  <div id="authForm">
+    <div class="row"><div><label for="email">Email address</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+    <div><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters"></div></div>
+    <button type="button" id="signInBtn">Sign in</button><button type="button" class="secondary" id="createAccountBtn">Create account</button>
+  </div>
+  <button type="button" id="signOutBtn" class="secondary hidden">Sign out</button>
+  <div id="authStatus" class="status hidden" role="status"></div>
+</section>
+
+<section class="card" id="report">
+  <h2>📝 Report a cleanliness problem</h2>
+  <p class="muted">Please report public-area cleanliness issues. Do not include sensitive personal information.</p>
+  <form id="reportForm">
+    <label for="reportName">Your name</label><input id="reportName" maxlength="100" required placeholder="Enter your name">
+    <label for="house">House / Plot number (optional)</label><input id="house" maxlength="100" placeholder="House or plot number">
+    <div class="grid">
+      <div><label for="street">Street / Locality</label><input id="street" maxlength="150" placeholder="Street or locality"></div>
+      <div><label for="city">City / Town</label><input id="city" maxlength="100" placeholder="City or town"></div>
+      <div><label for="state">State</label><input id="state" maxlength="100" placeholder="State"></div>
+      <div><label for="pincode">PIN code</label><input id="pincode" inputmode="numeric" maxlength="12" placeholder="PIN code"></div>
+      <div><label for="country">Country</label><input id="country" maxlength="100" value="India"></div>
+    </div>
+    <label for="address">Readable address (from GPS, or type it)</label><input id="address" maxlength="500" placeholder="Tap Use my location to find an address">
+    <label for="location">GPS coordinates</label><input id="location" readonly placeholder="Latitude, longitude will appear here">
+    <input id="latitude" type="hidden"><input id="longitude" type="hidden">
+    <button type="button" id="locationBtn">📍 Use my location</button>
+    <p class="muted">Address lookup uses OpenStreetMap Nominatim. Please use GPS only when you are comfortable sharing the location of the reported issue.</p>
+    <label for="description">Describe the problem</label><textarea id="description" maxlength="2000" required placeholder="For example: waste has been piling up near the public park entrance..."></textarea>
+    <label for="photo">Photo (optional, image up to 5 MB)</label><input id="photo" type="file" accept="image/*">
+    <button type="submit" id="submitReportBtn">Submit report</button>
+    <div id="reportStatus" class="status hidden" role="status"></div>
+  </form>
+</section>
+
+<section class="card" id="tips">
+  <h2>🌿 Everyday cleanliness tips</h2>
+  <div class="grid">
+    <div class="tip">♻️ <b>Separate waste</b><br>Keep wet and dry waste separate according to local collection rules.</div>
+    <div class="tip">🗑️ <b>Use the right bin</b><br>Do not leave litter beside an overflowing bin; report it to the local service.</div>
+    <div class="tip">🚯 <b>Reduce single-use plastic</b><br>Carry a reusable bottle or bag when practical.</div>
+    <div class="tip">💧 <b>Protect water</b><br>Never dump waste into drains, ponds or streams.</div>
+  </div>
+</section>
+
+<section class="card" id="volunteer">
+  <h2>🙋 Become a volunteer</h2>
+  <p>Register your interest in helping with community clean-up activities.</p>
+  <form id="volunteerForm">
+    <div class="grid"><div><label for="volunteerName">Name</label><input id="volunteerName" maxlength="100" required placeholder="Your name"></div>
+    <div><label for="volunteerCity">City / locality</label><input id="volunteerCity" maxlength="150" required placeholder="Where can you help?"></div></div>
+    <label for="volunteerNote">How would you like to help? (optional)</label><textarea id="volunteerNote" maxlength="1000" placeholder="For example: awareness, event support..."></textarea>
+    <button type="submit" id="volunteerBtn">Join the movement</button>
+    <div id="volunteerStatus" class="status hidden" role="status"></div>
+  </form>
+</section>
+<div class="footer">Made for a cleaner, greener India 🇮🇳 · Address data © OpenStreetMap contributors</div>
+</main>
+
+<button id="chatButton" type="button" aria-expanded="false">💬 Clean India Assistant</button>
+<div id="chatPanel" class="hidden" role="dialog" aria-label="Clean India Assistant">
+  <div class="chatHead"><span>🌱 Clean India Assistant</span><button id="chatClose" class="secondary" type="button" aria-label="Close chat">✕</button></div>
+  <div id="chatBody" class="chatBody"><div class="bubble bot">Hi! I can help with reporting a cleanliness issue, GPS addresses, waste segregation and volunteering. What would you like to know?</div></div>
+  <form id="chatForm" class="chatForm"><input id="chatInput" maxlength="500" placeholder="Ask a question..." aria-label="Chat message" required><button type="submit">Send</button></form>
+  <div class="muted" style="padding:0 10px 8px">This starter assistant uses a built-in FAQ, not a generative AI model.</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script>
+"use strict";
+
+// Firebase web config identifies your Firebase project. Secure access with Firebase Rules.
+const firebaseConfig = {
+  apiKey: "AIzaSyAOnF8P0wDBnDk6EWSEUEJHHuO9MTfXgg8",
+  authDomain: "clean-india-da788.firebaseapp.com",
+  projectId: "clean-india-da788",
+  storageBucket: "clean-india-da788.firebasestorage.app",
+  messagingSenderId: "612973022697",
+  appId: "1:612973022697:web:53d8345127195e4d81cf78",
+  measurementId: "G-8K3BQDW288"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+const $ = id => document.getElementById(id);
+let currentUser = null;
+
+function showStatus(id, message, isError=false) {
+  const el=$(id); el.textContent=message; el.classList.remove("hidden","error");
+  if(isError) el.classList.add("error");
 }
-    </script>
+function setBusy(button, busy, busyText) {
+  if (!button.dataset.originalText) button.dataset.originalText=button.textContent;
+  button.disabled=busy; button.textContent=busy ? busyText : button.dataset.originalText;
+}
+function requireUser() {
+  if (!currentUser) {
+    showStatus("authStatus","Please sign in or create an account first.",true);
+    $("accountCard").scrollIntoView({behavior:"smooth"});
+    return false;
+  }
+  return true;
+}
 
-</body>
+auth.onAuthStateChanged(user => {
+  currentUser=user;
+  $("authForm").classList.toggle("hidden",!!user);
+  $("signOutBtn").classList.toggle("hidden",!user);
+  $("authMessage").textContent=user ? "Signed in as " + user.email : "Sign in or create a free account to submit a report or volunteer.";
+  if(user) showStatus("authStatus","You are signed in. You can submit a report.");
+  else $("authStatus").classList.add("hidden");
+  if(user && user.email) $("reportName").value = $("reportName").value || (user.displayName || "");
+});
+$("authOpenBtn").addEventListener("click",()=> $("accountCard").scrollIntoView({behavior:"smooth"}));
+$("signInBtn").addEventListener("click",async()=>{
+  const email=$("email").value.trim(), password=$("password").value;
+  if(!email||!password) return showStatus("authStatus","Enter your email and password.",true);
+  try { await auth.signInWithEmailAndPassword(email,password); }
+  catch(e){showStatus("authStatus",friendlyAuthError(e),true);}
+});
+$("createAccountBtn").addEventListener("click",async()=>{
+  const email=$("email").value.trim(), password=$("password").value;
+  if(!email||!password) return showStatus("authStatus","Enter an email and a password of at least 6 characters.",true);
+  if(password.length<6) return showStatus("authStatus","Use a password with at least 6 characters.",true);
+  try { await auth.createUserWithEmailAndPassword(email,password); showStatus("authStatus","Account created! You are signed in."); }
+  catch(e){showStatus("authStatus",friendlyAuthError(e),true);}
+});
+$("signOutBtn").addEventListener("click",async()=>{try{await auth.signOut();}catch(e){showStatus("authStatus",e.message,true);}});
+function friendlyAuthError(e) {
+  const codes={
+    "auth/email-already-in-use":"An account already exists for this email. Try signing in.",
+    "auth/invalid-email":"Please enter a valid email address.",
+    "auth/weak-password":"Choose a stronger password with at least 6 characters.",
+    "auth/invalid-credential":"Email or password is incorrect.",
+    "auth/operation-not-allowed":"Enable Email/Password sign-in in Firebase Authentication settings.",
+    "auth/network-request-failed":"Network error. Check your internet connection."
+  };
+  return codes[e.code] || e.message || "Authentication failed.";
+}
 
-</html>
+// Reverse geocoding through public Nominatim. This is best-effort; manual address entry remains available.
+$("locationBtn").addEventListener("click",()=>{
+  if(!navigator.geolocation) return showStatus("reportStatus","GPS is not supported by this browser. Type the address manually.",true);
+  setBusy($("locationBtn"),true,"Finding location…");
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const lat=pos.coords.latitude, lon=pos.coords.longitude;
+    $("latitude").value=lat; $("longitude").value=lon; $("location").value=lat.toFixed(6)+", "+lon.toFixed(6);
+    showStatus("reportStatus","GPS found. Looking up a readable address…");
+    try {
+      const response=await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+encodeURIComponent(lat)+"&lon="+encodeURIComponent(lon)+"&zoom=18&addressdetails=1",{headers:{"Accept":"application/json"}});
+      if(!response.ok) throw new Error("Address service returned "+response.status);
+      const data=await response.json(), a=data.address||{};
+      if(data.display_name) $("address").value=data.display_name;
+      $("street").value=$("street").value || [a.road,a.neighbourhood,a.suburb].filter(Boolean).join(", ");
+      $("city").value=$("city").value || a.city || a.town || a.village || a.county || "";
+      $("state").value=$("state").value || a.state || "";
+      $("pincode").value=$("pincode").value || a.postcode || "";
+      $("country").value=a.country || $("country").value || "India";
+      showStatus("reportStatus",data.display_name ? "Readable address found. Check it before submitting." : "GPS found, but no readable address was returned. You can type it manually.");
+    } catch(e) {
+      showStatus("reportStatus","GPS coordinates were found, but readable-address lookup failed. You can still type the address manually. "+e.message,true);
+    } finally {setBusy($("locationBtn"),false);}
+  },err=>{
+    const msg=err.code===1?"Location permission was denied. Allow location in your browser settings, or type the address manually.":err.code===2?"Your location could not be determined. Try again or type the address manually.":"GPS request timed out. Try again.";
+    showStatus("reportStatus",msg,true);setBusy($("locationBtn"),false);
+  },{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+});
+
+$("reportForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!requireUser()) return;
+  const name=$("reportName").value.trim(), address=$("address").value.trim(), location=$("location").value.trim(), description=$("description").value.trim();
+  const file=$("photo").files[0];
+  if(!name||!description) return showStatus("reportStatus","Please enter your name and describe the issue.",true);
+  if(!address && !location) return showStatus("reportStatus","Please provide a readable address or use GPS.",true);
+  if(file && !file.type.startsWith("image/")) return showStatus("reportStatus","Please choose an image file.",true);
+  if(file && file.size>5*1024*1024) return showStatus("reportStatus","The image must be 5 MB or smaller.",true);
+  const btn=$("submitReportBtn");setBusy(btn,true,"Submitting…");
+  let photoUrl=null;
+  try {
+    if(file) {
+      const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-90);
+      const ref=storage.ref("reportPhotos/"+currentUser.uid+"/"+Date.now()+"_"+safeName);
+      const snap=await ref.put(file,{contentType:file.type});
+      photoUrl=await snap.ref.getDownloadURL();
+    }
+    await db.collection("reports").add({
+      uid:currentUser.uid, name, house:$("house").value.trim(), street:$("street").value.trim(),
+      city:$("city").value.trim(), state:$("state").value.trim(), pincode:$("pincode").value.trim(),
+      country:$("country").value.trim(), address, location,
+      latitude:$("latitude").value ? Number($("latitude").value) : null,
+      longitude:$("longitude").value ? Number($("longitude").value) : null,
+      description, photoUrl, status:"pending",
+      timestamp:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showStatus("reportStatus","✅ Report submitted successfully. Your report is pending review.");
+    $("description").value="";$("photo").value="";
+  } catch(e) {
+    console.error(e);
+    showStatus("reportStatus","Could not submit report: "+e.message+" Check Firebase Authentication, Firestore Rules and Storage setup.",true);
+  } finally {setBusy(btn,false);}
+});
+
+$("volunteerForm").addEventListener("submit",async event=>{
+  event.preventDefault();if(!requireUser()) return;
+  const name=$("volunteerName").value.trim(), city=$("volunteerCity").value.trim();
+  if(!name||!city) return showStatus("volunteerStatus","Enter your name and city/locality.",true);
+  setBusy($("volunteerBtn"),true,"Sending…");
+  try {
+    await db.collection("volunteers").add({
+      uid:currentUser.uid,name,city,note:$("volunteerNote").value.trim(),
+      status:"new",timestamp:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showStatus("volunteerStatus","🎉 Thanks! Your volunteer interest has been registered.");
+    $("volunteerForm").reset();
+  } catch(e) {showStatus("volunteerStatus","Could not register: "+e.message,true);}
+  finally {setBusy($("volunteerBtn"),false);}
+});
+
+// Built-in FAQ assistant. It works without a paid AI API, but is not a generative AI model.
+const faq=[
+  {keys:["report","submit","issue","problem"],answer:"To report an issue: sign in or create an account, open Report a cleanliness problem, describe the issue, add a readable address or GPS location, optionally attach a photo, then tap Submit report."},
+  {keys:["gps","location","address","nominatim","map"],answer:"Tap “Use my location” and allow location permission. Clean India gets GPS coordinates and asks OpenStreetMap Nominatim for a readable address. If lookup fails, type the address manually. Address lookup needs an internet connection."},
+  {keys:["photo","image","picture"],answer:"A report photo is optional. Choose an image up to 5 MB. The
